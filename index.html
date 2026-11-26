@@ -49,14 +49,19 @@ html.js .page.on{display:block}
 
 /* home: profile photos fly in from outside and settle around the wordmark */
 .home{display:none;position:relative;overflow:hidden;background:var(--navy);color:var(--on-navy);height:calc(100vh - var(--top-h,71px));height:calc(100dvh - var(--top-h,71px));min-height:520px}
-.home-c{position:absolute;inset:0;display:grid;place-content:center;justify-items:center;text-align:center;pointer-events:none;z-index:2}
+/* 중앙 문구는 사진 위에 얹히기만 하고, 사진 탭을 가로채지 않는다 */
+.home-c{position:absolute;inset:0;display:grid;place-content:center;justify-items:center;text-align:center;pointer-events:none;z-index:1;user-select:none}
+.home-c>*{pointer-events:none}
 .home-c em{font-style:normal;font-family:var(--num);font-weight:700;font-size:clamp(2.6rem,9vw,6rem);line-height:1;letter-spacing:-.04em}
 .home-c b{margin-top:12px;font-weight:500;font-size:clamp(.8rem,2vw,1rem)}
 .home-c small{margin-top:2px;font-size:clamp(.72rem,1.7vw,.85rem);color:var(--on-navy-mute)}
-.av{position:absolute;left:50%;top:50%;width:var(--s);height:var(--s);margin:calc(var(--s)/-2) 0 0 calc(var(--s)/-2);opacity:0;transform:translate(var(--x0),var(--y0)) scale(.5);will-change:transform;text-decoration:none}
+.av{position:absolute;left:50%;top:50%;width:var(--s);height:var(--s);margin:calc(var(--s)/-2) 0 0 calc(var(--s)/-2);opacity:0;transform:translate(var(--x0),var(--y0)) scale(.5);will-change:transform;text-decoration:none;z-index:2;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+/* 손가락으로도 누르기 쉽게 사진 둘레에 투명한 탭 영역을 붙인다 */
+.av::after{content:"";position:absolute;inset:-7px;border-radius:50%}
 .av.in{opacity:1;transform:translate(var(--x),var(--y)) scale(1);transition:transform 1.3s cubic-bezier(.16,.84,.3,1) var(--d),opacity .45s ease var(--d)}
 .av-i{display:block;width:100%;height:100%;border-radius:50%;overflow:hidden;border:2px solid var(--navy-line);background:var(--navy-3);transition:border-color .15s,scale .15s}
-.av:hover .av-i{border-color:var(--on-navy);scale:1.08}
+@media(hover:hover){.av:hover .av-i{border-color:var(--on-navy);scale:1.08}}
+.av:active .av-i{border-color:var(--on-navy);scale:1.06}
 .av.bob .av-i{animation:bob var(--bd) ease-in-out var(--bl) infinite alternate}
 .av img{width:100%;height:100%;object-fit:cover;display:block}
 @keyframes bob{to{translate:0 -7px}}
@@ -79,7 +84,10 @@ html.js .page.on{display:block}
 .hero{background:var(--navy);position:fixed;inset:0;z-index:50;cursor:pointer;transition:opacity .7s ease,visibility .7s}
 .hero.gone{opacity:0;visibility:hidden;pointer-events:none}
 .hero .wrap{text-align:center;height:100%;display:grid;place-items:center;padding-block:40px}
-.hint{position:absolute;left:0;right:0;bottom:calc(40px + env(safe-area-inset-bottom,0px));text-align:center;color:var(--on-navy-mute);font-size:.85rem;animation:finalIn 1s ease 9.2s both}
+/* 인트로 첫 화면부터 보이게 해서 9초를 기다리지 않고 눌러도 된다는 걸 알린다 */
+.hint{position:absolute;left:0;right:0;bottom:calc(34px + env(safe-area-inset-bottom,0px));text-align:center;color:var(--on-navy-mute);font-size:.85rem;animation:finalIn .6s ease .35s both}
+.hint b{display:block;color:var(--on-navy);font-weight:500;margin-bottom:2px}
+.hint span{font-size:.78rem;opacity:.9}
 .locked{overflow:hidden}
 .stage{display:grid;place-items:center}
 .stage>*{grid-area:1/1}
@@ -112,8 +120,19 @@ html.js .page.on{display:block}
 .head h2{font-size:clamp(1.6rem,3.6vw,2.1rem);font-weight:900}
 .head p{color:var(--mute);font-size:.95rem;padding-bottom:4px}
 .filters{margin-left:auto;display:flex;flex-wrap:wrap;gap:8px}
-.chipbtn{font-family:var(--kr);font-size:.88rem;font-weight:500;border:1px solid var(--line);background:var(--card);color:var(--mute);border-radius:999px;padding:7px 16px;cursor:pointer}
+.chipbtn{font-family:var(--kr);font-size:.88rem;font-weight:500;border:1px solid var(--line);background:var(--card);color:var(--mute);border-radius:999px;padding:8px 16px;cursor:pointer}
 .chipbtn[aria-pressed="true"]{background:var(--navy);border-color:var(--navy);color:var(--on-navy);font-weight:700}
+/* 크리에이터 검색·정렬 */
+.roster-bar{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:16px}
+.search{position:relative;flex:1 1 220px;max-width:320px;min-width:0;display:block}
+.search svg{position:absolute;left:12px;top:50%;width:16px;height:16px;translate:0 -50%;stroke:var(--mute);fill:none;stroke-width:2;pointer-events:none}
+.search input{width:100%;font:inherit;font-size:.9rem;padding:6px 14px 6px 36px;border:1px solid var(--line);border-radius:999px;background:var(--card);color:var(--ink);-webkit-appearance:none;appearance:none}
+.search input::-webkit-search-cancel-button{-webkit-appearance:none}
+.search input:focus{border-color:var(--navy);outline:none}
+.sorts{display:flex;gap:8px}
+.rcount{color:var(--mute);font-size:.82rem;margin-left:auto;font-variant-numeric:tabular-nums}
+.rnone{grid-column:1/-1;color:var(--mute);font-size:.95rem;padding:24px 4px}
+@media(max-width:480px){.search{max-width:none}.rcount{margin-left:0;width:100%}}
 
 /* roster */
 .roster{list-style:none;padding:0;margin:28px 0 0;display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:20px}
@@ -124,8 +143,11 @@ html.js .page.on{display:block}
 .meta{display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-size:.78rem;color:var(--mute)}
 .tag{background:var(--acc-soft);color:var(--acc-deep);font-weight:700;border-radius:6px;padding:2px 8px;font-size:.74rem}
 .tag.gray{background:var(--bg);color:var(--mute)}
+.tag.live{background:var(--navy);color:var(--on-navy);letter-spacing:.04em}
 .roster h3{font-size:1.15rem;font-weight:700;overflow-wrap:anywhere}
-.quote{color:var(--mute);font-size:.9rem;min-height:1.5em}
+.quote{color:var(--mute);font-size:.9rem}
+/* 한 줄 소개가 없는 카드는 빈 줄을 남기지 않는다 */
+.quote:empty{display:none}
 .fol{font-family:var(--num);font-weight:600;font-size:.95rem;font-variant-numeric:tabular-nums}
 .fol span{font-family:var(--kr);font-weight:400;color:var(--mute);font-size:.8rem;margin-right:6px}
 .links{display:flex;flex-wrap:wrap;gap:0 14px;margin-top:auto;padding-top:2px;border-top:1px solid var(--line)}
@@ -180,14 +202,19 @@ td:last-child{font-weight:700;white-space:nowrap}
 .sw.erase{background:var(--bg);color:var(--mute);font-size:1rem;line-height:1}
 .panel-foot{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:16px}
 .panel-foot small{color:var(--mute);font-size:.8rem;margin-left:auto}
+.panel-foot .btn:disabled{opacity:.4;cursor:not-allowed;transform:none}
+kbd{font-family:var(--num);font-size:.72rem;border:1px solid var(--line);border-bottom-width:2px;border-radius:5px;padding:1px 5px;color:var(--mute);margin-left:2px}
 
 .post{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px;padding-top:14px;border-top:1px solid var(--line)}
 .post input{flex:1;min-width:0;font:inherit;font-size:1rem;padding:10px 14px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink)}
 .panel .note{margin-top:10px;min-height:1.4em}
 .galwrap{margin-top:48px}
 .gal{list-style:none;padding:0;margin:18px 0 0;display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:16px}
-.gal li{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px;min-width:0}
+.gal li{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px;min-width:0;position:relative;cursor:pointer;transition:border-color .15s,transform .15s}
+.gal li:hover,.gal li:focus-visible{border-color:var(--navy);transform:translateY(-2px)}
 .gal canvas{width:100%;height:auto;display:block;border-radius:8px;image-rendering:pixelated;background:var(--navy)}
+.gpick{position:absolute;top:16px;left:16px;right:16px;font-size:.74rem;font-weight:700;text-align:center;padding:5px 0;border-radius:6px;background:rgba(255,255,255,.92);color:var(--ink);opacity:0;transition:opacity .15s;pointer-events:none}
+.gal li:hover .gpick,.gal li:focus-visible .gpick{opacity:1}
 .gmeta{display:flex;align-items:baseline;gap:8px;margin-top:8px;font-size:.85rem}
 .gmeta b{font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
 .gmeta time{color:var(--mute);font-size:.76rem;margin-left:auto;flex:none}
@@ -201,6 +228,9 @@ footer h3{font-family:var(--num);font-size:.78rem;letter-spacing:.18em;color:var
 footer p+p{margin-top:6px}
 footer a{color:var(--on-navy);text-decoration:none} footer a:hover{text-decoration:underline}
 footer strong{color:var(--on-navy);margin-right:6px}
+/* 이스터에그 토스트 */
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));translate:-50% 12px;z-index:200;max-width:min(92vw,420px);background:var(--navy);color:var(--on-navy);border:1px solid var(--navy-line);border-radius:999px;padding:11px 22px;font-size:.9rem;font-weight:500;text-align:center;box-shadow:0 18px 40px -18px var(--shadow);opacity:0;visibility:hidden;transition:opacity .25s,translate .25s,visibility .25s}
+.toast.show{opacity:1;visibility:visible;translate:-50% 0}
 
 @media(max-width:900px){
   .top .wrap{flex-wrap:wrap;gap:6px 16px;padding-bottom:6px}
@@ -217,7 +247,7 @@ footer strong{color:var(--on-navy);margin-right:6px}
   .filters{margin-left:0;width:100%}
   .sec{padding-block:44px}
 }
-@media(max-width:480px){.brand .tagline{display:none}.btn{padding:11px 16px}.stats div{padding-inline:16px}.stats strong{font-size:1.9rem}.roster{grid-template-columns:1fr 1fr;gap:12px}.body{padding:14px 14px 4px}.panel{margin-inline:-14px;padding:14px 8px}.tools,.panel-foot,.post,.panel .note{padding-inline:6px}}
+@media(max-width:480px){.brand .tagline{display:none}.btn{padding:11px 16px}.stats div{padding-inline:16px}.stats strong{font-size:1.9rem}.roster{grid-template-columns:1fr 1fr;gap:12px}.body{padding:14px 14px 14px}.panel{margin-inline:-14px;padding:14px 8px}.tools,.panel-foot,.post,.panel .note{padding-inline:6px}.gal{grid-template-columns:1fr 1fr;gap:12px}.gal li{padding:8px}}
 @media(prefers-reduced-motion:reduce){.av.bob .av-i{animation:none}*{transition:none!important}.intro,.mid{display:none}.final,.hint{animation:none}}
 </style>
 </head>
@@ -249,14 +279,18 @@ footer strong{color:var(--on-navy);margin-right:6px}
       <h1 class="final"><span>킹갓지누가 만든 사랑과 행복이 가득한</span><em>pixel</em></h1>
     </div>
   </div>
-  <p class="hint">화면을 누르면 들어갑니다</p>
+  <p class="hint"><b>화면을 누르면 들어갑니다</b><span>인트로는 9초, 아무 때나 눌러도 됩니다</span></p>
 </section>
 <script>
 (function(){
-  var h=document.getElementById('top'),root=document.documentElement;
+  var h=document.getElementById('top'),root=document.documentElement,SEEN='pixel-fan-intro-seen';
   root.classList.add('js');
-  function enter(){if(h.classList.contains('gone'))return;h.classList.add('gone');root.classList.remove('locked');document.dispatchEvent(new Event('pixel-enter'));}
-  if(location.hash&&location.hash!=='#top'&&location.hash!=='#home'){h.classList.add('gone');return;}
+  function seen(){try{return sessionStorage.getItem(SEEN)==='1';}catch(e){return false;}}
+  function markSeen(){try{sessionStorage.setItem(SEEN,'1');}catch(e){}}
+  function enter(){if(h.classList.contains('gone'))return;markSeen();h.classList.add('gone');root.classList.remove('locked');document.dispatchEvent(new Event('pixel-enter'));}
+  /* 섹션 링크로 바로 들어왔거나, 같은 탭에서 이미 인트로를 본 경우엔 인트로를 건너뛴다 */
+  var deepLink=location.hash&&location.hash!=='#top'&&location.hash!=='#home';
+  if(deepLink||seen()){h.classList.add('gone');root.classList.remove('locked');return;}
   root.classList.add('locked');
   h.setAttribute('role','button');h.setAttribute('tabindex','0');h.setAttribute('aria-label','팬페이지 들어가기');
   h.addEventListener('click',enter);
@@ -331,12 +365,24 @@ footer strong{color:var(--on-navy);margin-right:6px}
     <span class="eyebrow">CREATORS</span>
     <div class="head">
       <h2>픽셀네트워크 크리에이터</h2>
-      <p>지누 포함 26명, 팔로워 많은 순</p>
+      <p>지누 포함 26명</p>
       <div class="filters" id="filters" role="group" aria-label="스트리머 필터">
         <button class="chipbtn" id="f-all" type="button" data-f="all" aria-pressed="true">전체</button>
         <button class="chipbtn" id="f-100k" type="button" data-f="big" aria-pressed="false">팔로워 10만+</button>
         <button class="chipbtn" id="f-soop" type="button" data-f="soop" aria-pressed="false">SOOP 채널</button>
+        <button class="chipbtn" id="f-live" type="button" data-f="live" aria-pressed="false" hidden>방송중</button>
       </div>
+    </div>
+    <div class="roster-bar">
+      <label class="search">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M16.5 16.5L21 21"/></svg>
+        <input id="searchBox" type="search" placeholder="이름으로 찾기" aria-label="크리에이터 이름 검색" autocomplete="off">
+      </label>
+      <div class="sorts" id="sorts" role="group" aria-label="정렬 기준">
+        <button class="chipbtn" type="button" data-s="followers" aria-pressed="true">팔로워순</button>
+        <button class="chipbtn" type="button" data-s="name" aria-pressed="false">가나다순</button>
+      </div>
+      <span class="rcount" id="rosterCount" aria-live="polite"></span>
     </div>
     <ul class="roster" id="rosterList"></ul>
     <p class="note">팔로워 수는 2026년 11월 25일 치지직 기준입니다. 카드의 한 줄 소개는 각 채널 소개 문구에서 가져왔습니다. 명단은 나무위키 최근 판 기준이며, "위키 기재"는 채널 소개에서 소속을 확인하지 못한 채널입니다.</p>
@@ -361,6 +407,8 @@ footer strong{color:var(--on-navy);margin-right:6px}
       <ul class="ticks">
         <li>색을 고르고 칸을 누르면 바로 찍힙니다</li>
         <li>누른 채로 끌면 이어서 그려집니다</li>
+        <li>실행 취소(<kbd>Ctrl+Z</kbd>)로 최근 30단계까지 되돌립니다</li>
+        <li>게시판 그림을 누르면 내 보드로 불러와 이어 그릴 수 있습니다</li>
         <li>게시판에 올리면 다른 사람도 볼 수 있습니다</li>
       </ul>
     </div>
@@ -368,8 +416,10 @@ footer strong{color:var(--on-navy);margin-right:6px}
       <canvas id="board" width="640" height="400" aria-label="응원 픽셀 보드. 칸을 눌러 색을 칠합니다."></canvas>
       <div class="tools" id="tools" role="group" aria-label="색상 선택"></div>
       <div class="panel-foot">
+        <button class="btn line" id="undoBoard" type="button" disabled title="Ctrl+Z">실행 취소<kbd>Ctrl+Z</kbd></button>
         <button class="btn line" id="clearBoard" type="button">보드 비우기</button>
-        <button class="btn dark" id="heartBoard" type="button">하트 다시 그리기</button>
+        <button class="btn dark" id="heartBoard" type="button">하트</button>
+        <button class="btn dark" id="logoBoard" type="button">픽셀 로고</button>
         <small id="boardNote">자동 저장</small>
       </div>
       <div class="post" id="postRow" hidden>
@@ -382,9 +432,12 @@ footer strong{color:var(--on-navy);margin-right:6px}
   <div class="wrap galwrap">
     <h3 class="sub-h">응원 게시판</h3>
     <p class="note" id="galNote">게시판을 불러오는 중입니다.</p>
+    <p class="note" id="galHint">마음에 드는 그림을 누르면 내 보드로 불러와 이어 그릴 수 있습니다.</p>
     <ul class="gal" id="gallery"></ul>
   </div>
 </section>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <footer>
   <div class="wrap">
@@ -416,26 +469,72 @@ var INK=v('--navy'),INK2=v('--navy-line');
 
 /* ---- roster ---- */
 var R=[["지누", "2086f44c7b09a17cef6786f21389db3b", 160980, "설립자", "", "", 0], ["모라라", "6bd0bb97d31365e7834d8113bb01d889", 67873, "소속 표기", "노래하는 하트 개복치", "molalamolala", 1], ["눈꽃", "343fc0e877aa8ca0cad5106b33d6fa95", 59509, "소속 표기", "", "", 2], ["루다", "3e9272616070e9f66cc4afd9e69753c2", 24447, "소속 표기", "종합게임 방송, 수·목 정기휴방", "", 3], ["채현찌", "0e604eba7206f04b1e5f15e0a1cb2616", 107997, "소속 표기", "매일 오후 8시에 나타나는 치직공무원", "", 4], ["너불", "af3323d30e11ae42c39d7203c7e07fa2", 114245, "소속 표기", "", "", 5], ["행돌", "6cac96d5c9b7a9fd28903aa32fc61749", 132575, "소속 표기", "레디언트 연막싸개", "", 6], ["뇨롱이", "c65ca7335aaeb2ca0c985078223017c0", 75450, "소속 표기", "순금 99.9% 뇨롱이 등장!", "", 7], ["나나양", "80b36a0ae8e887e893ce0014dbfece4a", 130075, "위키 기재", "우주대스타입니다.", "", 8], ["이도원", "9186c4b8304a448878c86395355f0a75", 81832, "소속 표기", "안녕하세요 이도원입니다", "", 9], ["히나리 페뇨", "f2607c885c65b6776b9cf5bfb473753c", 47102, "소속 표기", "", "", 10], ["감블러", "0974bf2ded8c3e124797f7be6d1bdbb5", 56957, "위키 기재", "", "9ambler", 11], ["강지", "b5ed5db484d04faf4d150aedd362f34b", 319241, "위키 기재", "", "", 12], ["금사향", "5f800579267362c952f76f3c6fe695b2", 101983, "위키 기재", "", "", 13], ["김똘복", "57fd052838434874068eafdd2cb581b3", 48681, "위키 기재", "", "", 14], ["김뚜띠", "2eee29ce69664154d8bc478825941259", 152251, "위키 기재", "저에요", "", 15], ["김뿡", "17f0cfcba4ff608de5eabb5110d134d0", 146349, "위키 기재", "", "", 16], ["꽃핀", "a86031fdfeb1b223ad1172cf6ba4b94e", 66284, "위키 기재", "진짜 리얼 99% 꽃핀", "", 17], ["남봉", "ac6a03808bffbe58b3bfb0e25271836e", 115580, "소속 표기", "", "", 18], ["악녀", "6a8b6a54e6c295246249aed782bd345e", 68282, "위키 기재", "", "", 19], ["연비니", "371259eaf5ec1635b4807b612272f431", 66608, "소속 표기", "", "", 20], ["윤이샘", "3fbe35e19e546bda4f4534869d35ac08", 16396, "위키 기재", "생각보다 이것저것 잘 하는 사람", "yoonesaem", 21], ["이초홍", "ed21d36a44d1956520189a784afc27ed", 103444, "위키 기재", "게임좋아하는 이초홍", "", 22], ["임나은", "0de024a1ca4a64f1a23a95ff9eeee5a5", 132697, "소속 표기", "겜잘스", "", 23], ["탬탬버린", "a7e175625fdea5a7d98428302b7aa57f", 336485, "위키 기재", "훌라춤을 춘다 탬버린!", "", 24], ["핑맨", "0dcec72cd1033032a77dfced6c0c91f8", 146242, "소속 표기", "", "", 25]];
-R=[R[0]].concat(R.slice(1).sort(function(a,b){return b[2]-a[2];}));
 function el(t,c,x){var e=document.createElement(t);if(c)e.className=c;if(x)e.textContent=x;return e;}
 function link(href,txt){var a=el('a','',txt);a.href=href;a.target='_blank';a.rel='noopener';return a;}
-var list=document.getElementById('rosterList');
-R.forEach(function(r,idx){
-  var li=el('li');li.dataset.big=r[2]>=100000?'1':'';li.dataset.soop=r[5]?'1':'';
+var list=document.getElementById('rosterList'),rcount=document.getElementById('rosterCount'),
+    searchBox=document.getElementById('searchBox'),fb=document.getElementById('filters'),sorts=document.getElementById('sorts');
+var base=R.slice(); /* 원래 명단: 지누 + 나머지(팔로워 많은 순) */
+var view={f:'all',s:'followers',q:''};
+/* 팔로워순은 설립자를 맨 앞에 두고, 가나다순은 이름으로 정렬한다 */
+function rowsForView(){
+  var rows=base.slice();
+  if(view.s==='name')rows.sort(function(a,b){return a[0].localeCompare(b[0],'ko');});
+  else rows=[rows[0]].concat(rows.slice(1).sort(function(a,b){return b[2]-a[2];}));
+  return rows.filter(function(r){
+    if(view.f==='live'&&!r.live)return false;
+    if(view.f==='big'&&r[2]<100000)return false;
+    if(view.f==='soop'&&!r[5])return false;
+    if(view.q&&r[0].toLowerCase().indexOf(view.q)<0)return false;
+    return true;
+  });
+}
+function card(r){
+  var li=el('li');
   var im=document.createElement('img');im.src='img/s'+r[6]+'.jpg';im.alt=r[0]+' 치지직 프로필 이미지';im.width=240;im.height=180;im.loading='lazy';
   var body=el('div','body'),meta=el('div','meta');
+  if(r.live)meta.appendChild(el('span','tag live','LIVE'));
   meta.appendChild(el('span','tag'+(r[3]==='위키 기재'?' gray':''),r[3]));meta.appendChild(el('span','','치지직'+(r[5]?' · SOOP':'')));
   var fol=el('p','fol');fol.appendChild(el('span','','팔로워'));fol.appendChild(document.createTextNode(r[2].toLocaleString('ko-KR')));
   var links=el('div','links');
   links.appendChild(link('https://chzzk.naver.com/'+r[1],'치지직 채널 →'));
   if(r[5])links.appendChild(link('https://ch.sooplive.co.kr/'+r[5],'SOOP 채널 →'));
-  body.appendChild(meta);body.appendChild(el('h3','',r[0]));body.appendChild(el('p','quote',r[4]));body.appendChild(fol);body.appendChild(links);
-  li.appendChild(im);li.appendChild(body);list.appendChild(li);
-});
-var fb=document.getElementById('filters');
+  body.appendChild(meta);body.appendChild(el('h3','',r[0]));
+  if(r[4])body.appendChild(el('p','quote',r[4])); /* 소개가 없는 카드는 빈 줄을 넣지 않는다 */
+  body.appendChild(fol);body.appendChild(links);
+  li.appendChild(im);li.appendChild(body);return li;
+}
+function renderRoster(){
+  var rows=rowsForView();
+  list.textContent='';
+  rows.forEach(function(r){list.appendChild(card(r));});
+  if(!rows.length)list.appendChild(el('li','rnone','조건에 맞는 크리에이터가 없습니다. 검색어를 바꿔 보세요.'));
+  rcount.textContent=rows.length===base.length?('전체 '+base.length+'명'):(rows.length+'명 / 전체 '+base.length+'명');
+}
 fb.addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;
   [].forEach.call(fb.children,function(x){x.setAttribute('aria-pressed',String(x===b));});
-  var f=b.dataset.f;[].forEach.call(list.children,function(li){li.hidden=!(f==='all'||li.dataset[f]);});});
+  view.f=b.dataset.f;renderRoster();});
+sorts.addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;
+  [].forEach.call(sorts.children,function(x){x.setAttribute('aria-pressed',String(x===b));});
+  view.s=b.dataset.s;renderRoster();});
+searchBox.addEventListener('input',function(){view.q=searchBox.value.trim().toLowerCase();renderRoster();});
+renderRoster();
+
+/* ---- 실시간 방송중 표시 (치지직) ----
+   api.chzzk.naver.com 은 브라우저 교차 출처(CORS) 요청에 Allow-Origin 헤더를 돌려주지 않아
+   정적 페이지에서 직접 부를 수 없다. 프록시/워커 주소를 LIVE_ENDPOINT 에 넣으면 켜지며,
+   응답은 {live:true/false} 형태를 기대한다. */
+var LIVE_ENDPOINT='';
+function initLive(){
+  var chip=document.getElementById('f-live');
+  if(!LIVE_ENDPOINT)return;
+  chip.hidden=false;
+  base.forEach(function(r){
+    fetch(LIVE_ENDPOINT+(LIVE_ENDPOINT.indexOf('?')<0?'?':'&')+'channelId='+r[1],{headers:{Accept:'application/json'}})
+      .then(function(res){return res.ok?res.json():null;})
+      .then(function(d){if(d&&d.live){r.live=true;renderRoster();}},function(){/* 조용히 넘어간다 */});
+  });
+}
+initLive();
 
 /* ---- home: profile photos keep drifting in from outside toward the centre (two static rings when motion is reduced) ---- */
 var home=document.getElementById('home'),topEl=document.querySelector('.top'),intro=document.getElementById('top');
@@ -500,7 +599,25 @@ route();
 var bc=document.getElementById('board'),bx=bc.getContext('2d'),BW=32,BH=20,BS=20,KEY='pixel-fan-board';
 var HEART=['01100110','11111111','11111111','11111111','01111110','00111100','00011000'];
 var grid,cur=0,note=document.getElementById('boardNote');
-function heart(){grid=new Array(BW*BH).fill(-1);HEART.forEach(function(r,y){for(var x=0;x<8;x++)if(r[x]==='1')grid[(6+y)*BW+12+x]=2;});}
+function blank(){return new Array(BW*BH).fill(-1);}
+function heart(){grid=blank();HEART.forEach(function(r,y){for(var x=0;x<8;x++)if(r[x]==='1')grid[(6+y)*BW+12+x]=2;});}
+/* 픽셀 로고: 헤더 마크처럼 2×2 네 칸으로 놓은 도안 (가운데 십자 금) */
+function logo(){
+  grid=blank();
+  var x0=9,y0=3,n=6,gap=2,W=5;
+  for(var by=0;by<2;by++)for(var bxx=0;bxx<2;bxx++)
+    for(var dy=0;dy<n;dy++)for(var dx=0;dx<n;dx++)
+      grid[(y0+by*(n+gap)+dy)*BW+x0+bxx*(n+gap)+dx]=W;
+}
+function same(a,b){for(var i=0;i<a.length;i++)if(a[i]!==b[i])return false;return true;}
+/* 최근 30단계까지 보관하고 Ctrl+Z 또는 버튼으로 되돌린다 */
+var HIST=[],HMAX=30,undoBtn=document.getElementById('undoBoard'),strokeBase=null;
+function pushHist(snap){HIST.push(snap);if(HIST.length>HMAX)HIST.shift();undoBtn.disabled=!HIST.length;}
+function undo(){
+  if(!HIST.length)return;
+  grid=HIST.pop();drawBoard();save();undoBtn.disabled=!HIST.length;
+  note.textContent='실행 취소 · 남은 '+HIST.length+'단계';
+}
 function load(){try{var g=JSON.parse(localStorage.getItem(KEY));if(Array.isArray(g)&&g.length===BW*BH){grid=g;return;}}catch(e){}heart();}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(grid));}catch(e){note.textContent='저장할 수 없는 브라우저입니다';}}
 function drawBoard(){
@@ -519,9 +636,10 @@ function paint(e){var r=bc.getBoundingClientRect(),x=Math.floor((e.clientX-r.lef
     for(;;){if(dot(x0,y0))ch=true;if(x0===x&&y0===y)break;var e2=2*err;if(e2>-dy){err-=dy;x0+=sx;}if(e2<dx){err+=dx;y0+=sy;}}}
   lastX=x;lastY=y;if(ch)drawBoard();}
 var down=false;
-bc.addEventListener('pointerdown',function(e){down=true;lastX=lastY=-1;try{bc.setPointerCapture(e.pointerId);}catch(_){ }paint(e);});
+bc.addEventListener('pointerdown',function(e){down=true;lastX=lastY=-1;strokeBase=grid.slice();try{bc.setPointerCapture(e.pointerId);}catch(_){ }paint(e);});
 bc.addEventListener('pointermove',function(e){if(down)paint(e);});
-function up(){if(down){down=false;save();}}
+/* 한 번 누를 때마다 직전 상태를 히스토리에 넣어 획 단위로 되돌린다 */
+function up(){if(!down)return;down=false;if(strokeBase&&!same(strokeBase,grid))pushHist(strokeBase);strokeBase=null;save();}
 bc.addEventListener('pointerup',up);bc.addEventListener('pointercancel',up);
 var tools=document.getElementById('tools');
 function mk(i,label){var b=document.createElement('button');b.type='button';b.className='sw'+(i<0?' erase':'');b.id='sw'+(i<0?'x':i);
@@ -530,8 +648,18 @@ function mk(i,label){var b=document.createElement('button');b.type='button';b.cl
   b.addEventListener('click',function(){cur=i;[].forEach.call(tools.children,function(t){t.setAttribute('aria-pressed','false')});b.setAttribute('aria-pressed','true');});
   tools.appendChild(b);}
 ['민트','노랑','코랄','하늘','보라','하양'].forEach(function(l,i){mk(i,l);});mk(-1,'지우개');
-document.getElementById('clearBoard').addEventListener('click',function(){grid=new Array(BW*BH).fill(-1);drawBoard();save();});
-document.getElementById('heartBoard').addEventListener('click',function(){heart();drawBoard();save();});
+function applyTemplate(fn,msg){pushHist(grid.slice());fn();drawBoard();save();note.textContent=msg;}
+document.getElementById('clearBoard').addEventListener('click',function(){applyTemplate(function(){grid=blank();},'보드를 비웠습니다. 실행 취소로 되돌릴 수 있어요.');});
+document.getElementById('heartBoard').addEventListener('click',function(){applyTemplate(heart,'하트 도안을 그렸습니다.');});
+document.getElementById('logoBoard').addEventListener('click',function(){applyTemplate(logo,'픽셀 로고 도안을 그렸습니다.');});
+undoBtn.addEventListener('click',undo);
+/* Ctrl+Z / ⌘Z — 도트 보드가 보이는 화면에서만 가로챈다 */
+document.addEventListener('keydown',function(e){
+  if(!(e.ctrlKey||e.metaKey)||e.shiftKey||e.altKey)return;
+  if(String(e.key).toLowerCase()!=='z')return;
+  if(!document.getElementById('cheer').classList.contains('on'))return;
+  e.preventDefault();undo();
+});
 load();drawBoard();
 
 /* ---- shared board (Supabase) ----
@@ -539,7 +667,7 @@ load();drawBoard();
    테이블과 권한은 supabase.sql 을 SQL Editor에서 한 번 실행해 만듭니다. */
 var SUPA_URL='https://ymnwgrhuhdujvsqjsopt.supabase.co';
 var SUPA_KEY='sb_publishable_wZS8V4N0KXcyOKyOryxJVQ_Khb9g_4j';
-var gal=document.getElementById('gallery'),galNote=document.getElementById('galNote'),postRow=document.getElementById('postRow'),
+var gal=document.getElementById('gallery'),galNote=document.getElementById('galNote'),galHint=document.getElementById('galHint'),postRow=document.getElementById('postRow'),
     postBtn=document.getElementById('postBoard'),postNote=document.getElementById('postNote'),nick=document.getElementById('nick');
 var busy=false,COOL=30000,LAST='pixel-fan-last-post';
 function enc(g){return g.map(function(c){return c<0?'.':String(c);}).join('');}
@@ -547,15 +675,31 @@ function thumb(str){var c=document.createElement('canvas');c.width=BW*4;c.height
   for(var i=0;i<BW*BH;i++){var ch=str.charCodeAt(i)-48;if(ch>=0&&ch<PAL.length){x.fillStyle=PAL[ch];x.fillRect((i%BW)*4,Math.floor(i/BW)*4,4,4);}}return c;}
 function api(path,opt){opt=opt||{};opt.headers=Object.assign({apikey:SUPA_KEY,Authorization:'Bearer '+SUPA_KEY},opt.headers||{});
   return fetch(SUPA_URL.replace(/\/$/,'')+'/rest/v1/'+path,opt).then(function(r){if(!r.ok)throw new Error('http '+r.status);return r;});}
+/* 게시판 그림을 내 보드로 불러와 이어 그리기 (DB 스키마 변경 없이 앞에서만 처리) */
+function remix(str){
+  if(typeof str!=='string'||str.length!==BW*BH)return;
+  pushHist(grid.slice());
+  grid=str.split('').map(function(ch){var n=ch.charCodeAt(0)-48;return n>=0&&n<PAL.length?n:-1;});
+  drawBoard();save();
+  note.textContent='게시판 그림을 불러왔습니다. 이어서 그려 보세요. (실행 취소로 되돌림)';
+  bc.scrollIntoView({behavior:'smooth',block:'center'});
+}
 function renderGal(rows){
   rows=rows.filter(function(p){return p&&typeof p.g==='string'&&p.g.length===BW*BH;});
   gal.textContent='';
   galNote.textContent=rows.length?('올라온 그림 '+rows.length+'개'):'아직 올라온 그림이 없습니다. 위 보드에 그리고 "게시판에 올리기"를 누르면 여기에 보입니다.';
+  galHint.hidden=!rows.length;
   rows.forEach(function(p){
     var li=el('li'),meta=el('div','gmeta'),d=new Date(p.created_at);
-    meta.appendChild(el('b','',(typeof p.n==='string'&&p.n.trim())?p.n.slice(0,12):'익명'));
+    var who=(typeof p.n==='string'&&p.n.trim())?p.n.slice(0,12):'익명';
+    li.tabIndex=0;li.setAttribute('role','button');li.setAttribute('aria-label',who+' 그림을 내 보드로 불러오기');
+    li.appendChild(el('span','gpick','불러오기'));
+    meta.appendChild(el('b','',who));
     meta.appendChild(el('time','',isNaN(d)?'':(d.getMonth()+1)+'.'+d.getDate()));
-    li.appendChild(thumb(p.g));li.appendChild(meta);gal.appendChild(li);});
+    li.appendChild(thumb(p.g));li.appendChild(meta);
+    li.addEventListener('click',function(){remix(p.g);});
+    li.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();remix(p.g);}});
+    gal.appendChild(li);});
 }
 function loadGal(){return api('cheers?select=g,n,created_at&order=created_at.desc&limit=200').then(function(r){return r.json();}).then(renderGal,
   function(){galNote.textContent='게시판을 불러오지 못했습니다. 잠시 뒤 새로고침해 주세요.';});}
@@ -572,6 +716,17 @@ postBtn.addEventListener('click',function(){
 });
 if(SUPA_URL&&SUPA_KEY){postRow.hidden=false;loadGal();}
 else{galNote.textContent='게시판은 준비 중입니다. 곧 누구나 그림을 올릴 수 있게 됩니다.';}
+
+/* ---- 이스터에그: 헤더의 PIXEL FAN 마크를 5번 연속 누르면 팬심 메시지 ---- */
+var toast=document.getElementById('toast'),mark=document.querySelector('.mark'),hits=0,hitAt=0,toastT=0;
+var FAN_MSG=['여기는 팬심으로 운영됩니다. 지누님 오늘도 화이팅!','픽셀네트워크와 아무 관련 없는 팬페이지, 팬심 100%입니다.','킹갓지누의 사랑과 행복이 가득한 픽셀, 계속 응원합니다!'];
+function showToast(msg){toast.textContent=msg;toast.classList.add('show');clearTimeout(toastT);toastT=setTimeout(function(){toast.classList.remove('show');},3400);}
+mark.addEventListener('click',function(e){
+  e.preventDefault(); /* 마크만 눌렀을 때는 홈으로 이동하지 않고 클릭만 센다 */
+  var now=Date.now();
+  hits=(now-hitAt<1500)?hits+1:1;hitAt=now;
+  if(hits>=5){hits=0;showToast(FAN_MSG[Math.floor(Math.random()*FAN_MSG.length)]);}
+});
 })();
 </script>
 </body>
