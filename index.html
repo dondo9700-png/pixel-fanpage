@@ -437,7 +437,7 @@ fb.addEventListener('click',function(e){var b=e.target.closest('button');if(!b)r
   [].forEach.call(fb.children,function(x){x.setAttribute('aria-pressed',String(x===b));});
   var f=b.dataset.f;[].forEach.call(list.children,function(li){li.hidden=!(f==='all'||li.dataset[f]);});});
 
-/* ---- home: profile photos fly in from outside, in random order, and settle on two rings ---- */
+/* ---- home: profile photos keep drifting in from outside toward the centre (two static rings when motion is reduced) ---- */
 var home=document.getElementById('home'),topEl=document.querySelector('.top'),intro=document.getElementById('top');
 var avs=R.map(function(r){
   var a=el('a','av'),i=el('span','av-i'),im=document.createElement('img');
@@ -457,18 +457,25 @@ function place(){
   avs.forEach(function(a,k){var p=pts[slotOf[k]];a.style.setProperty('--s',s+'px');a.style.setProperty('--x',p[0].toFixed(1)+'px');a.style.setProperty('--y',p[1].toFixed(1)+'px');});
   return {W:W,H:H,s:s};
 }
+/* 계속 흐르기: 사진마다 화면 가장자리 바깥의 무작위 지점에서 나타나 가운데로 흘러가며 작아지고 사라진 뒤, 새 지점에서 다시 시작한다 */
+var anims=[],reduce=!!(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches);
+function stopFlow(){anims.forEach(function(x){if(x){x.onfinish=null;x.cancel();}});anims=[];}
+function drift(a,k,first){
+  var W=home.clientWidth,H=home.clientHeight;if(!W||!H||!home.classList.contains('on'))return;
+  var s=parseFloat(a.style.getPropertyValue('--s'))||60,t=Math.random()*2*Math.PI,t2=t+(Math.random()-.5)*.7;
+  var far=Math.min((W/2)/Math.abs(Math.cos(t)||1e-6),(H/2)/Math.abs(Math.sin(t)||1e-6))+s,near=Math.min(W,H)*.2;
+  var an=a.animate([
+    {transform:'translate('+(Math.cos(t)*far).toFixed(1)+'px,'+(Math.sin(t)*far).toFixed(1)+'px) scale(1)',opacity:0},
+    {opacity:1,offset:.1},{opacity:1,offset:.7},
+    {transform:'translate('+(Math.cos(t2)*near).toFixed(1)+'px,'+(Math.sin(t2)*near).toFixed(1)+'px) scale(.3)',opacity:0}],
+    {duration:7000+Math.random()*5000,delay:first?Math.random()*7000:Math.random()*500,easing:'cubic-bezier(.3,0,.75,.65)',fill:'both'});
+  anims[k]=an;an.onfinish=function(){drift(a,k,false);};
+}
 function fly(){
-  clearTimeout(floatT);slotOf=shuffle(avs.length);
-  avs.forEach(function(a){a.classList.remove('in','bob');});
-  var m=place();if(!m)return;
-  var far=Math.sqrt(m.W*m.W+m.H*m.H)/2+m.s*2,order=shuffle(avs.length);
-  avs.forEach(function(a,k){var t=Math.random()*2*Math.PI;
-    a.style.setProperty('--x0',(Math.cos(t)*far).toFixed(1)+'px');a.style.setProperty('--y0',(Math.sin(t)*far).toFixed(1)+'px');
-    a.style.setProperty('--d',(order[k]*75)+'ms');
-    a.style.setProperty('--bd',(2.4+Math.random()*1.8).toFixed(2)+'s');a.style.setProperty('--bl',(-Math.random()*3).toFixed(2)+'s');});
-  void home.offsetWidth;
-  avs.forEach(function(a){a.classList.add('in');});
-  floatT=setTimeout(function(){avs.forEach(function(a){a.style.setProperty('--d','0ms');a.classList.add('bob');});},avs.length*75+1400);
+  stopFlow();avs.forEach(function(a){a.classList.remove('in');});
+  if(!place())return;
+  if(reduce||!avs[0].animate){avs.forEach(function(a){a.style.setProperty('--d','0ms');a.classList.add('in');});return;}
+  avs.forEach(function(a,k){drift(a,k,true);});
 }
 
 /* ---- tabs: each menu item shows only its own page ---- */
@@ -478,7 +485,7 @@ function route(){
   [].forEach.call(pages,function(s){s.classList.toggle('on',s.dataset.page===p);});
   [].forEach.call(tabs,function(a){if(a.getAttribute('href')==='#'+p)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');});
   window.scrollTo(0,0);
-  if(p==='home'){if(intro.classList.contains('gone'))fly();else place();}
+  if(p==='home'){if(intro.classList.contains('gone'))fly();else place();}else stopFlow();
 }
 window.addEventListener('hashchange',route);
 document.addEventListener('pixel-enter',function(){if(home.classList.contains('on'))fly();});
