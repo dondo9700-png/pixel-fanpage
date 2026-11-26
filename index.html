@@ -40,7 +40,26 @@ h1,h2,h3{text-wrap:balance;letter-spacing:-.02em}
 .brand .tagline{display:block;font-size:.72rem;color:var(--on-navy-mute)}
 nav{display:flex;gap:28px;margin-left:12px}
 nav a{text-decoration:none;font-family:var(--num);font-weight:500;font-size:.76rem;letter-spacing:.16em;padding-block:6px;border-bottom:1px solid transparent}
-nav a:hover{border-color:var(--on-navy)}
+nav a:hover,nav a[aria-current="page"]{border-color:var(--on-navy)}
+nav a{color:var(--on-navy-mute)} nav a:hover,nav a[aria-current="page"]{color:var(--on-navy)}
+
+/* pages: one tab shows one page */
+html.js .page{display:none}
+html.js .page.on{display:block}
+
+/* home: profile photos fly in from outside and settle around the wordmark */
+.home{display:none;position:relative;overflow:hidden;background:var(--navy);color:var(--on-navy);height:calc(100vh - var(--top-h,71px));height:calc(100dvh - var(--top-h,71px));min-height:520px}
+.home-c{position:absolute;inset:0;display:grid;place-content:center;justify-items:center;text-align:center;pointer-events:none;z-index:2}
+.home-c em{font-style:normal;font-family:var(--num);font-weight:700;font-size:clamp(2.6rem,9vw,6rem);line-height:1;letter-spacing:-.04em}
+.home-c b{margin-top:12px;font-weight:500;font-size:clamp(.8rem,2vw,1rem)}
+.home-c small{margin-top:2px;font-size:clamp(.72rem,1.7vw,.85rem);color:var(--on-navy-mute)}
+.av{position:absolute;left:50%;top:50%;width:var(--s);height:var(--s);margin:calc(var(--s)/-2) 0 0 calc(var(--s)/-2);opacity:0;transform:translate(var(--x0),var(--y0)) scale(.5);will-change:transform;text-decoration:none}
+.av.in{opacity:1;transform:translate(var(--x),var(--y)) scale(1);transition:transform 1.3s cubic-bezier(.16,.84,.3,1) var(--d),opacity .45s ease var(--d)}
+.av-i{display:block;width:100%;height:100%;border-radius:50%;overflow:hidden;border:2px solid var(--navy-line);background:var(--navy-3);transition:border-color .15s,scale .15s}
+.av:hover .av-i{border-color:var(--on-navy);scale:1.08}
+.av.bob .av-i{animation:bob var(--bd) ease-in-out var(--bl) infinite alternate}
+.av img{width:100%;height:100%;object-fit:cover;display:block}
+@keyframes bob{to{translate:0 -7px}}
 .top .right{margin-left:auto;display:flex;align-items:center;gap:20px}
 .asof{text-align:right;line-height:1.2}
 .asof small{display:block;font-size:.7rem;color:var(--mute)}
@@ -134,8 +153,8 @@ nav a:hover{border-color:var(--on-navy)}
 .mission{margin:26px 0 0;padding:22px 26px;background:var(--navy);color:var(--on-navy);border-radius:var(--r)}
 .mission p{font-size:clamp(1.1rem,2.6vw,1.45rem);font-weight:700;line-height:1.5}
 .mission cite{display:block;margin-top:8px;font-style:normal;font-size:.8rem;color:var(--on-navy-mute)}
-.two{display:grid;grid-template-columns:.8fr 1.2fr;gap:36px;margin-top:40px}
-.two>*{min-width:0}
+.histwrap{margin-top:40px;max-width:620px}
+.prwrap{margin-top:28px}
 .sub-h{font-size:1.15rem;font-weight:700;padding-bottom:10px;border-bottom:2px solid var(--navy)}
 .hist{list-style:none;margin:0;padding:0}
 .hist li{display:flex;gap:16px;padding:10px 0;border-bottom:1px solid var(--line);font-size:.93rem}
@@ -184,10 +203,13 @@ footer a{color:var(--on-navy);text-decoration:none} footer a:hover{text-decorati
 footer strong{color:var(--on-navy);margin-right:6px}
 
 @media(max-width:900px){
-  nav{display:none}
+  .top .wrap{flex-wrap:wrap;gap:6px 16px;padding-bottom:6px}
+  nav{order:3;width:100%;margin-left:0;gap:8px 12px;justify-content:space-between;overflow-x:auto;scrollbar-width:none}
+  nav::-webkit-scrollbar{display:none}
+  nav a{padding-block:10px;white-space:nowrap;letter-spacing:.08em}
   .hero .wrap{padding-block:40px}
   .float{left:12px;bottom:-20px}
-  .about,.two{grid-template-columns:1fr}
+  .about{grid-template-columns:1fr}
   .cheer{grid-template-columns:1fr;gap:28px}
   .stats .wrap{grid-template-columns:1fr 1fr;row-gap:24px}
   .stats div:nth-child(3){padding-left:0;border-left:0}
@@ -196,14 +218,14 @@ footer strong{color:var(--on-navy);margin-right:6px}
   .sec{padding-block:44px}
 }
 @media(max-width:480px){.brand .tagline{display:none}.btn{padding:11px 16px}.stats div{padding-inline:16px}.stats strong{font-size:1.9rem}.roster{grid-template-columns:1fr 1fr;gap:12px}.body{padding:14px 14px 4px}.panel{margin-inline:-14px;padding:14px 8px}.tools,.panel-foot,.post,.panel .note{padding-inline:6px}}
-@media(prefers-reduced-motion:reduce){*{transition:none!important}.intro,.mid{display:none}.final,.hint{animation:none}}
+@media(prefers-reduced-motion:reduce){.av.bob .av-i{animation:none}*{transition:none!important}.intro,.mid{display:none}.final,.hint{animation:none}}
 </style>
 </head>
 <body>
 
 <header class="top">
   <div class="wrap">
-    <a class="brand" href="#top">
+    <a class="brand" href="#home">
       <span class="mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
       <span><b>PIXEL FAN</b><span class="tagline">팬이 만든 팬페이지</span></span>
     </a>
@@ -232,8 +254,9 @@ footer strong{color:var(--on-navy);margin-right:6px}
 <script>
 (function(){
   var h=document.getElementById('top'),root=document.documentElement;
-  function enter(){h.classList.add('gone');root.classList.remove('locked');}
-  if(location.hash&&location.hash!=='#top'){h.classList.add('gone');return;}
+  root.classList.add('js');
+  function enter(){if(h.classList.contains('gone'))return;h.classList.add('gone');root.classList.remove('locked');document.dispatchEvent(new Event('pixel-enter'));}
+  if(location.hash&&location.hash!=='#top'&&location.hash!=='#home'){h.classList.add('gone');return;}
   root.classList.add('locked');
   h.setAttribute('role','button');h.setAttribute('tabindex','0');h.setAttribute('aria-label','팬페이지 들어가기');
   h.addEventListener('click',enter);
@@ -242,7 +265,15 @@ footer strong{color:var(--on-navy);margin-right:6px}
 })();
 </script>
 
-<section class="sec white" id="about">
+<section class="home page" id="home" data-page="home" aria-label="홈">
+  <div class="home-c">
+    <em>pixel</em>
+    <b>크리에이터 26명</b>
+    <small>메뉴를 눌러 보세요</small>
+  </div>
+</section>
+
+<section class="sec white page" id="about" data-page="about">
   <div class="wrap">
     <span class="eyebrow">ABOUT PIXEL</span>
     <div class="head">
@@ -270,25 +301,32 @@ footer strong{color:var(--on-navy);margin-right:6px}
         <p>스트리머 굿즈를 만들어 파는 쇼핑몰을 함께 운영합니다. 흔히 MCN으로 불리지만, MCN은 아니라는 설명도 있습니다.</p>
       </article>
     </div>
-    <div class="two">
-      <div>
+    <div class="histwrap">
         <h3 class="sub-h">연혁</h3>
         <ol class="hist"><li><time>2019.12.10</time><span>스트리머 9명으로 설립</span></li><li><time>2023.08.18</time><span>윤이샘 합류</span></li><li><time>2024.03.01</time><span>너불 합류</span></li><li><time>2024.07.04</time><span>행돌 합류</span></li><li><time>2024.09.29</time><span>눈꽃 합류</span></li><li><time>2024.11.08</time><span>루다 합류</span></li><li><time>2025.01.17</time><span>채현찌 합류</span></li><li><time>2025.03.12</time><span>남봉 합류</span></li><li><time>2026.10.20</time><span>이도원, 히나리 페뇨 합류</span></li></ol>
         <p class="note">날짜는 나무위키에 적힌 계약 공지일입니다.</p>
-      </div>
-      <div>
-        <h3 class="sub-h" id="pr">함께한 광고</h3>
+    </div>
+  </div>
+</section>
+
+<section class="sec white page" id="pr" data-page="pr">
+  <div class="wrap">
+    <span class="eyebrow">PR CONTENTS</span>
+    <div class="head">
+      <h2>함께한 광고</h2>
+      <p>공식 사이트에 소개된 광고 사례</p>
+    </div>
+    <div class="prwrap">
         <div class="tbl"><table>
           <thead><tr><th>광고주</th><th>내용</th><th>크리에이터</th></tr></thead>
           <tbody><tr><td>H2 인터랙티브</td><td>No Straight Roads</td><td>지누</td></tr><tr><td>유비소프트</td><td>레인보우 식스 시즈</td><td>김뿡</td></tr><tr><td>라이엇 게임즈</td><td>와일드 리프트</td><td>탬탬버린</td></tr><tr><td>NVIDIA</td><td>GeForce RTX 3090</td><td>지누</td></tr><tr><td>블리자드 코리아</td><td>콜 오브 듀티: 워존</td><td>금사향</td></tr><tr><td>X.D글로벌</td><td>후궁의 법칙</td><td>나나양</td></tr><tr><td>엔젤게임즈</td><td>프로젝트 랜타디</td><td>김뿡</td></tr><tr><td>X.D글로벌</td><td>소녀전선</td><td>핑맨</td></tr><tr><td>네이쳐크리에이티브</td><td>크레인팝</td><td>탬탬버린</td></tr><tr><td>CDPR</td><td>사이버펑크 2077</td><td>김뿡</td></tr><tr><td>스타터</td><td>데빌북</td><td>탬탬버린</td></tr></tbody>
         </table></div>
         <p class="note">공식 사이트에 소개된 사례 중 현재 명단에 있는 크리에이터만 옮겼습니다.</p>
-      </div>
     </div>
   </div>
 </section>
 
-<section class="sec" id="roster">
+<section class="sec page" id="roster" data-page="roster">
   <div class="wrap">
     <span class="eyebrow">CREATORS</span>
     <div class="head">
@@ -305,7 +343,7 @@ footer strong{color:var(--on-navy);margin-right:6px}
   </div>
 </section>
 
-<section class="stats" aria-label="숫자로 보는 픽셀">
+<section class="stats page" data-page="roster" aria-label="숫자로 보는 픽셀">
   <div class="wrap">
     <div><strong>26<i>명</i></strong><span>이 페이지에 정리한 스트리머</span></div>
     <div><strong>287<i>만+</i></strong><span>26개 채널 치지직 팔로워 합계</span></div>
@@ -314,7 +352,7 @@ footer strong{color:var(--on-navy);margin-right:6px}
   </div>
 </section>
 
-<section class="sec" id="cheer">
+<section class="sec page" id="cheer" data-page="cheer">
   <div class="wrap cheer">
     <div>
       <span class="eyebrow">CHEER BOARD</span>
@@ -398,6 +436,54 @@ var fb=document.getElementById('filters');
 fb.addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;
   [].forEach.call(fb.children,function(x){x.setAttribute('aria-pressed',String(x===b));});
   var f=b.dataset.f;[].forEach.call(list.children,function(li){li.hidden=!(f==='all'||li.dataset[f]);});});
+
+/* ---- home: profile photos fly in from outside, in random order, and settle on two rings ---- */
+var home=document.getElementById('home'),topEl=document.querySelector('.top'),intro=document.getElementById('top');
+var avs=R.map(function(r){
+  var a=el('a','av'),i=el('span','av-i'),im=document.createElement('img');
+  a.href='#roster';a.title=r[0];a.tabIndex=-1;a.setAttribute('aria-hidden','true');
+  im.src='img/s'+r[6]+'.jpg';im.alt='';im.width=240;im.height=180;
+  i.appendChild(im);a.appendChild(i);home.appendChild(a);return a;});
+function shuffle(n){var o=[];for(var i=0;i<n;i++)o.push(i);for(i=n-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),t=o[i];o[i]=o[j];o[j]=t;}return o;}
+var slotOf=shuffle(avs.length),floatT=0;
+function place(){
+  document.documentElement.style.setProperty('--top-h',topEl.offsetHeight+'px');
+  var W=home.clientWidth,H=home.clientHeight;if(!W||!H)return null;
+  var wide=W>H,s=Math.max(46,Math.min(88,Math.round(Math.min(W,H)*.125)));
+  var rx2=Math.min(W/2-s/2-10,540),ry2=Math.min(H/2-s/2-12,wide?320:9999);
+  var rx1=rx2*(wide?.56:.64),ry1=ry2*(wide?.56:.6),n1=10,n2=avs.length-n1,pts=[],i,t;
+  for(i=0;i<n1;i++){t=2*Math.PI*i/n1-Math.PI/2;pts.push([Math.cos(t)*rx1,Math.sin(t)*ry1]);}
+  for(i=0;i<n2;i++){t=2*Math.PI*(i+.5)/n2-Math.PI/2;pts.push([Math.cos(t)*rx2,Math.sin(t)*ry2]);}
+  avs.forEach(function(a,k){var p=pts[slotOf[k]];a.style.setProperty('--s',s+'px');a.style.setProperty('--x',p[0].toFixed(1)+'px');a.style.setProperty('--y',p[1].toFixed(1)+'px');});
+  return {W:W,H:H,s:s};
+}
+function fly(){
+  clearTimeout(floatT);slotOf=shuffle(avs.length);
+  avs.forEach(function(a){a.classList.remove('in','bob');});
+  var m=place();if(!m)return;
+  var far=Math.sqrt(m.W*m.W+m.H*m.H)/2+m.s*2,order=shuffle(avs.length);
+  avs.forEach(function(a,k){var t=Math.random()*2*Math.PI;
+    a.style.setProperty('--x0',(Math.cos(t)*far).toFixed(1)+'px');a.style.setProperty('--y0',(Math.sin(t)*far).toFixed(1)+'px');
+    a.style.setProperty('--d',(order[k]*75)+'ms');
+    a.style.setProperty('--bd',(2.4+Math.random()*1.8).toFixed(2)+'s');a.style.setProperty('--bl',(-Math.random()*3).toFixed(2)+'s');});
+  void home.offsetWidth;
+  avs.forEach(function(a){a.classList.add('in');});
+  floatT=setTimeout(function(){avs.forEach(function(a){a.style.setProperty('--d','0ms');a.classList.add('bob');});},avs.length*75+1400);
+}
+
+/* ---- tabs: each menu item shows only its own page ---- */
+var PAGES=['home','about','roster','pr','cheer'],pages=document.querySelectorAll('.page'),tabs=document.querySelectorAll('nav a');
+function route(){
+  var p=(location.hash||'#home').slice(1);if(PAGES.indexOf(p)<0)p='home';
+  [].forEach.call(pages,function(s){s.classList.toggle('on',s.dataset.page===p);});
+  [].forEach.call(tabs,function(a){if(a.getAttribute('href')==='#'+p)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');});
+  window.scrollTo(0,0);
+  if(p==='home'){if(intro.classList.contains('gone'))fly();else place();}
+}
+window.addEventListener('hashchange',route);
+document.addEventListener('pixel-enter',function(){if(home.classList.contains('on'))fly();});
+var rzT=0;window.addEventListener('resize',function(){clearTimeout(rzT);rzT=setTimeout(place,120);});
+route();
 
 /* ---- board ---- */
 var bc=document.getElementById('board'),bx=bc.getContext('2d'),BW=32,BH=20,BS=20,KEY='pixel-fan-board';
