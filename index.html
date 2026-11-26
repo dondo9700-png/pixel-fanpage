@@ -1,0 +1,481 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="픽셀네트워크를 응원하는 팬이 만든 비공식 팬페이지">
+<title>픽셀네트워크 팬페이지</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Noto+Sans+KR:wght@400;500;700;900&display=swap">
+<style>
+html{-webkit-text-size-adjust:100%}body{margin:0}img{max-width:100%}[hidden]{display:none!important}
+
+/* Layout: black-and-white minimal, after the official site. Black header and centered hero whose line fades from one phrase to the next; white card sections below. */
+:root{
+  color-scheme:light;
+  --navy:#000000; --navy-2:#0b0b0b; --navy-3:#141414; --navy-line:#2c2c2c;
+  --bg:#f5f5f5; --card:#ffffff; --line:#e4e4e4;
+  --ink:#0a0a0a; --mute:#6b6b6b; --on-navy:#ffffff; --on-navy-mute:#a3a3a3;
+  --acc:#ffffff; --acc-deep:#000000; --acc-soft:#ececec; --focus:#2f7df6;
+  --shadow:rgba(0,0,0,.4);
+  --p1:#19c58d; --p2:#ffc94a; --p3:#ff6f6f; --p4:#58b9ff; --p5:#a98bff; --p6:#ffffff;
+  --kr:"Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  --num:"Poppins","Noto Sans KR",sans-serif;
+  --r:16px;
+}
+*{box-sizing:border-box}
+body{background:var(--card);color:var(--ink);font-family:var(--kr);font-size:16px;line-height:1.65;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+.wrap{max-width:1160px;margin-inline:auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+h1,h2,h3,p{margin:0}
+h1,h2,h3{text-wrap:balance;letter-spacing:-.02em}
+:focus-visible{outline:3px solid var(--focus);outline-offset:3px;border-radius:6px}
+
+/* header */
+.top{background:var(--navy);color:var(--on-navy);border-bottom:1px solid var(--navy-line)}
+.top .wrap{display:flex;align-items:center;gap:32px;padding-block:14px}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none}
+.mark{width:42px;height:42px;border-radius:11px;background:var(--on-navy);display:grid;grid-template-columns:8px 8px;grid-template-rows:8px 8px;gap:3px;place-content:center;flex:none}
+.mark i{background:var(--navy)} .mark i:nth-child(2){background:var(--on-navy-mute)}
+.brand b{display:block;font-family:var(--num);font-weight:700;font-size:1.2rem;letter-spacing:.06em;line-height:1.1}
+.brand .tagline{display:block;font-size:.72rem;color:var(--on-navy-mute)}
+nav{display:flex;gap:28px;margin-left:12px}
+nav a{text-decoration:none;font-family:var(--num);font-weight:500;font-size:.76rem;letter-spacing:.16em;padding-block:6px;border-bottom:1px solid transparent}
+nav a:hover{border-color:var(--on-navy)}
+.top .right{margin-left:auto;display:flex;align-items:center;gap:20px}
+.asof{text-align:right;line-height:1.2}
+.asof small{display:block;font-size:.7rem;color:var(--mute)}
+.asof b{font-family:var(--num);font-weight:700;font-size:1.05rem}
+.btn{display:inline-flex;align-items:center;gap:8px;font-family:var(--kr);font-weight:700;font-size:.98rem;text-decoration:none;border:0;cursor:pointer;border-radius:10px;padding:12px 22px;transition:transform .12s,box-shadow .12s,background .12s;white-space:nowrap}
+.btn:hover{transform:translateY(-1px)}
+.btn.dark{background:var(--navy);color:var(--on-navy)}
+.btn.dark::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--acc)}
+.btn.acc{background:var(--on-navy);color:var(--navy)}
+.btn.pill{border-radius:999px;padding:8px 18px;font-size:.85rem}
+.btn.ghost{background:transparent;color:var(--on-navy);border:1px solid var(--navy-line)}
+.btn.line{background:var(--card);color:var(--ink);border:1px solid var(--line)}
+
+/* hero */
+.hero{background:linear-gradient(120deg,var(--navy) 0%,var(--navy-2) 70%,var(--navy-3) 100%);color:var(--on-navy)}
+.top{position:relative;z-index:60}
+.hero{background:var(--navy);position:fixed;inset:0;z-index:50;cursor:pointer;transition:opacity .7s ease,visibility .7s}
+.hero.gone{opacity:0;visibility:hidden;pointer-events:none}
+.hero .wrap{text-align:center;height:100%;display:grid;place-items:center;padding-block:40px}
+.hint{position:absolute;left:0;right:0;bottom:calc(40px + env(safe-area-inset-bottom,0px));text-align:center;color:var(--on-navy-mute);font-size:.85rem;animation:finalIn 1s ease 9.2s both}
+.locked{overflow:hidden}
+.stage{display:grid;place-items:center}
+.stage>*{grid-area:1/1}
+.intro{font-size:clamp(1.05rem,3.4vw,1.7rem);font-weight:500;color:var(--on-navy);animation:introOut 1s ease 2.2s both}
+.mid{font-size:clamp(1.05rem,3.4vw,1.7rem);font-weight:500;color:var(--on-navy);max-width:24em;text-wrap:balance;animation:midShow 4.6s ease 3.3s both}
+.intro,.mid,.final span{word-break:keep-all}
+.mid small{display:block;margin-top:14px;font-size:.55em;font-weight:400;color:var(--on-navy-mute)}
+@keyframes midShow{0%{opacity:0}18%{opacity:1}78%{opacity:1}100%{opacity:0}}
+.final{display:grid;justify-items:center;gap:.2em;animation:finalIn .9s ease 8s both}
+.final span{font-size:clamp(1rem,3vw,1.5rem);font-weight:500;letter-spacing:.02em;color:var(--on-navy)}
+.final em{font-style:normal;font-family:var(--num);font-weight:700;font-size:clamp(4.2rem,17vw,9.5rem);line-height:1;letter-spacing:-.04em}
+@keyframes introOut{to{opacity:0}}
+@keyframes finalIn{from{opacity:0}}
+.by{color:var(--on-navy-mute);font-size:.9rem;margin-top:22px}
+.cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:34px;justify-content:center}
+.shot{position:relative}
+.mosaic{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;border-radius:22px;overflow:hidden;border:1px solid var(--navy-line);background:var(--navy-2)}
+.mosaic img{width:100%;aspect-ratio:1;object-fit:cover;display:block}
+.float{position:absolute;left:-24px;bottom:-22px;background:var(--card);color:var(--ink);border-radius:14px;padding:12px 18px 12px 14px;display:flex;gap:12px;align-items:center;box-shadow:0 18px 40px -18px var(--shadow);max-width:calc(100% - 8px)}
+.check{width:38px;height:38px;border-radius:10px;background:var(--acc-soft);display:grid;place-items:center;flex:none}
+.check svg{width:18px;height:18px;stroke:var(--acc-deep);fill:none;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.float b{display:block;font-size:.92rem;line-height:1.3}
+.float small{color:var(--mute);font-size:.76rem}
+
+/* sections */
+.sec{background:var(--bg);padding-block:60px}
+.sec.white{background:var(--card)}
+.eyebrow{font-family:var(--num);font-weight:700;font-size:.8rem;letter-spacing:.18em;color:var(--acc-deep)}
+.head{display:flex;flex-wrap:wrap;align-items:flex-end;gap:10px 16px;margin-top:6px}
+.head h2{font-size:clamp(1.6rem,3.6vw,2.1rem);font-weight:900}
+.head p{color:var(--mute);font-size:.95rem;padding-bottom:4px}
+.filters{margin-left:auto;display:flex;flex-wrap:wrap;gap:8px}
+.chipbtn{font-family:var(--kr);font-size:.88rem;font-weight:500;border:1px solid var(--line);background:var(--card);color:var(--mute);border-radius:999px;padding:7px 16px;cursor:pointer}
+.chipbtn[aria-pressed="true"]{background:var(--navy);border-color:var(--navy);color:var(--on-navy);font-weight:700}
+
+/* roster */
+.roster{list-style:none;padding:0;margin:28px 0 0;display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:20px}
+.roster li{background:var(--card);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;display:flex;flex-direction:column;min-width:0;transition:transform .15s,box-shadow .15s}
+.roster li:hover{transform:translateY(-3px);box-shadow:0 18px 36px -24px var(--shadow)}
+.roster img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block;background:var(--bg)}
+.body{padding:18px 20px 20px;display:flex;flex-direction:column;gap:6px;flex:1}
+.meta{display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-size:.78rem;color:var(--mute)}
+.tag{background:var(--acc-soft);color:var(--acc-deep);font-weight:700;border-radius:6px;padding:2px 8px;font-size:.74rem}
+.tag.gray{background:var(--bg);color:var(--mute)}
+.roster h3{font-size:1.15rem;font-weight:700;overflow-wrap:anywhere}
+.quote{color:var(--mute);font-size:.9rem;min-height:1.5em}
+.fol{font-family:var(--num);font-weight:600;font-size:.95rem;font-variant-numeric:tabular-nums}
+.fol span{font-family:var(--kr);font-weight:400;color:var(--mute);font-size:.8rem;margin-right:6px}
+.links{display:flex;flex-wrap:wrap;gap:0 14px;margin-top:auto;padding-top:2px;border-top:1px solid var(--line)}
+.links a{display:inline-flex;align-items:center;min-height:44px;font-size:.85rem;font-weight:700;color:var(--acc-deep);text-decoration:none}
+.links a:hover{text-decoration:underline}
+.note{color:var(--mute);font-size:.85rem;margin-top:20px;max-width:80ch}
+
+/* stats */
+.stats{background:var(--navy);color:var(--on-navy);border-top:2px solid var(--acc)}
+.stats .wrap{display:grid;grid-template-columns:repeat(4,1fr);padding-block:34px}
+.stats div{padding-inline:28px;border-left:1px solid var(--navy-line);min-width:0}
+.stats div:first-child{padding-left:0;border-left:0}
+.stats strong{font-family:var(--num);font-weight:700;font-size:2.3rem;line-height:1.1;display:block;font-variant-numeric:tabular-nums}
+.stats strong i{font-style:normal;color:var(--acc);font-size:1.1rem;margin-left:3px;font-family:var(--kr);font-weight:700}
+.stats span{color:var(--on-navy-mute);font-size:.86rem}
+
+/* about */
+.about{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:28px}
+.about article{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:26px 24px;min-width:0}
+.ico{width:46px;height:46px;border-radius:12px;background:var(--acc-soft);display:grid;place-items:center;margin-bottom:18px}
+.ico svg{width:22px;height:22px;stroke:var(--acc-deep);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.about h3{font-size:1.1rem;font-weight:700;margin-bottom:6px}
+.about p{color:var(--mute);font-size:.92rem}
+
+.mission{margin:26px 0 0;padding:22px 26px;background:var(--navy);color:var(--on-navy);border-radius:var(--r)}
+.mission p{font-size:clamp(1.1rem,2.6vw,1.45rem);font-weight:700;line-height:1.5}
+.mission cite{display:block;margin-top:8px;font-style:normal;font-size:.8rem;color:var(--on-navy-mute)}
+.two{display:grid;grid-template-columns:.8fr 1.2fr;gap:36px;margin-top:40px}
+.two>*{min-width:0}
+.sub-h{font-size:1.15rem;font-weight:700;padding-bottom:10px;border-bottom:2px solid var(--navy)}
+.hist{list-style:none;margin:0;padding:0}
+.hist li{display:flex;gap:16px;padding:10px 0;border-bottom:1px solid var(--line);font-size:.93rem}
+.hist time{font-family:var(--num);font-weight:600;color:var(--acc-deep);font-variant-numeric:tabular-nums;flex:none;width:6.2em}
+.tbl{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:.9rem}
+th{text-align:left;font-weight:500;color:var(--mute);font-size:.8rem;padding:10px 12px 8px 0;border-bottom:1px solid var(--line)}
+td{padding:9px 12px 9px 0;border-bottom:1px solid var(--line);vertical-align:top}
+td:last-child{font-weight:700;white-space:nowrap}
+/* board */
+.cheer{display:grid;grid-template-columns:.8fr 1.2fr;gap:48px;align-items:start}
+.cheer>*{min-width:0}
+.cheer h2{font-size:clamp(1.6rem,3.6vw,2.1rem);font-weight:900;margin-top:8px;line-height:1.3}
+.cheer .lead{color:var(--mute);margin-top:16px}
+.ticks{list-style:none;padding:0;margin:22px 0 0;display:grid;gap:10px}
+.ticks li{display:flex;gap:10px;align-items:baseline;font-size:.95rem}
+.ticks li::before{content:"";width:12px;height:7px;border-left:2px solid var(--acc-deep);border-bottom:2px solid var(--acc-deep);transform:rotate(-45deg) translateY(-3px);flex:none}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:22px;box-shadow:0 24px 50px -36px var(--shadow)}
+#board{width:100%;height:auto;display:block;border-radius:12px;image-rendering:pixelated;touch-action:none;cursor:crosshair;background:var(--navy)}
+.tools{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px;align-items:center}
+.sw{width:34px;height:34px;border-radius:9px;border:2px solid var(--line);background:var(--c);cursor:pointer;padding:0}
+.sw[aria-pressed="true"]{border-color:var(--navy);box-shadow:0 0 0 3px var(--acc-soft)}
+.sw.erase{background:var(--bg);color:var(--mute);font-size:1rem;line-height:1}
+.panel-foot{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:16px}
+.panel-foot small{color:var(--mute);font-size:.8rem;margin-left:auto}
+
+.post{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px;padding-top:14px;border-top:1px solid var(--line)}
+.post input{flex:1;min-width:0;font:inherit;font-size:1rem;padding:10px 14px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink)}
+.panel .note{margin-top:10px;min-height:1.4em}
+.galwrap{margin-top:48px}
+.gal{list-style:none;padding:0;margin:18px 0 0;display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:16px}
+.gal li{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px;min-width:0}
+.gal canvas{width:100%;height:auto;display:block;border-radius:8px;image-rendering:pixelated;background:var(--navy)}
+.gmeta{display:flex;align-items:baseline;gap:8px;margin-top:8px;font-size:.85rem}
+.gmeta b{font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+.gmeta time{color:var(--mute);font-size:.76rem;margin-left:auto;flex:none}
+.gdel{margin-top:6px;font:inherit;font-size:.76rem;color:var(--mute);background:none;border:0;padding:0;cursor:pointer;text-decoration:underline}
+/* footer */
+footer{background:var(--navy);color:var(--on-navy-mute);border-top:2px solid var(--acc);font-size:.86rem}
+footer .wrap{display:grid;grid-template-columns:1.2fr 1fr 1.6fr;gap:36px;padding-block:40px 48px}
+footer .wrap>*{min-width:0}
+footer b.logo{font-family:var(--num);font-size:1.2rem;letter-spacing:.06em;color:var(--on-navy);display:block;margin-bottom:8px}
+footer h3{font-family:var(--num);font-size:.78rem;letter-spacing:.18em;color:var(--acc);margin-bottom:10px}
+footer p+p{margin-top:6px}
+footer a{color:var(--on-navy);text-decoration:none} footer a:hover{text-decoration:underline}
+footer strong{color:var(--on-navy);margin-right:6px}
+
+@media(max-width:900px){
+  nav{display:none}
+  .hero .wrap{padding-block:40px}
+  .float{left:12px;bottom:-20px}
+  .about,.two{grid-template-columns:1fr}
+  .cheer{grid-template-columns:1fr;gap:28px}
+  .stats .wrap{grid-template-columns:1fr 1fr;row-gap:24px}
+  .stats div:nth-child(3){padding-left:0;border-left:0}
+  footer .wrap{grid-template-columns:1fr}
+  .filters{margin-left:0;width:100%}
+  .sec{padding-block:44px}
+}
+@media(max-width:480px){.brand .tagline{display:none}.btn{padding:11px 16px}.stats div{padding-inline:16px}.stats strong{font-size:1.9rem}.roster{grid-template-columns:1fr 1fr;gap:12px}.body{padding:14px 14px 4px}.panel{margin-inline:-14px;padding:14px 8px}.tools,.panel-foot,.post,.panel .note{padding-inline:6px}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}.intro,.mid{display:none}.final,.hint{animation:none}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#top">
+      <span class="mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+      <span><b>PIXEL FAN</b><span class="tagline">팬이 만든 팬페이지</span></span>
+    </a>
+    <nav aria-label="주요 메뉴">
+      <a href="#about">ABOUT</a>
+      <a href="#roster">CREATORS</a>
+      <a href="#pr">PR CONTENTS</a>
+      <a href="#cheer">CHEER</a>
+    </nav>
+    <div class="right">
+      <a class="btn ghost pill" href="https://pixelnetwork.kr/" target="_blank" rel="noopener">공식 사이트 ↗</a>
+    </div>
+  </div>
+</header>
+
+<section class="hero" id="top">
+  <div class="wrap">
+    <div class="stage">
+      <p class="intro">해당 홈페이지는 일개 팬이 만든 팬페이지입니다.</p>
+      <p class="mid">해당 홈페이지는 상업적으로 만든게 아닌 단순 팬심으로 만들게 된 사이트 입니다.<small>(vforge는 실명제를 지지합니다. 지누님ㅎ...)</small></p>
+      <h1 class="final"><span>킹갓지누가 만든 사랑과 행복이 가득한</span><em>pixel</em></h1>
+    </div>
+  </div>
+  <p class="hint">화면을 누르면 들어갑니다</p>
+</section>
+<script>
+(function(){
+  var h=document.getElementById('top'),root=document.documentElement;
+  function enter(){h.classList.add('gone');root.classList.remove('locked');}
+  if(location.hash&&location.hash!=='#top'){h.classList.add('gone');return;}
+  root.classList.add('locked');
+  h.setAttribute('role','button');h.setAttribute('tabindex','0');h.setAttribute('aria-label','팬페이지 들어가기');
+  h.addEventListener('click',enter);
+  h.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();enter();}});
+  document.querySelector('.top').addEventListener('click',function(e){if(e.target.closest('a'))enter();});
+})();
+</script>
+
+<section class="sec white" id="about">
+  <div class="wrap">
+    <span class="eyebrow">ABOUT PIXEL</span>
+    <div class="head">
+      <h2>픽셀네트워크 소개</h2>
+      <p>크리에이터가 직접 세운 회사</p>
+    </div>
+    <blockquote class="mission">
+      <p>"크리에이터 자신의 브랜드 가치를 온전히 인정받을 수 있도록"</p>
+      <cite>픽셀네트워크 공식 사이트 소개 문구</cite>
+    </blockquote>
+    <div class="about">
+      <article>
+        <span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c.8-3.6 3.6-5.5 7-5.5s6.2 1.9 7 5.5"/></svg></span>
+        <h3>설립자 지누, 대표 김진혁</h3>
+        <p>스트리머 지누(김진우)가 설립했고, 지금은 김진혁 대표가 맡고 있습니다. 지누는 소속 스트리머로 활동합니다.</p>
+      </article>
+      <article>
+        <span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10v4h3l5 4V6l-5 4H4z"/><path d="M16 9a4 4 0 010 6M18.5 6.5a7.5 7.5 0 010 11"/></svg></span>
+        <h3>광고 연결</h3>
+        <p>크리에이터가 콘텐츠 제작에 집중하고 더 많은 수익을 낼 수 있게 돕는 것이 목표라고 밝히고 있습니다.</p>
+      </article>
+      <article>
+        <span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h14l-1 12H6L5 8z"/><path d="M9 8V6.5a3 3 0 016 0V8"/></svg></span>
+        <h3>픽셀스토어</h3>
+        <p>스트리머 굿즈를 만들어 파는 쇼핑몰을 함께 운영합니다. 흔히 MCN으로 불리지만, MCN은 아니라는 설명도 있습니다.</p>
+      </article>
+    </div>
+    <div class="two">
+      <div>
+        <h3 class="sub-h">연혁</h3>
+        <ol class="hist"><li><time>2019.12.10</time><span>스트리머 9명으로 설립</span></li><li><time>2023.08.18</time><span>윤이샘 합류</span></li><li><time>2024.03.01</time><span>너불 합류</span></li><li><time>2024.07.04</time><span>행돌 합류</span></li><li><time>2024.09.29</time><span>눈꽃 합류</span></li><li><time>2024.11.08</time><span>루다 합류</span></li><li><time>2025.01.17</time><span>채현찌 합류</span></li><li><time>2025.03.12</time><span>남봉 합류</span></li><li><time>2026.10.20</time><span>이도원, 히나리 페뇨 합류</span></li></ol>
+        <p class="note">날짜는 나무위키에 적힌 계약 공지일입니다.</p>
+      </div>
+      <div>
+        <h3 class="sub-h" id="pr">함께한 광고</h3>
+        <div class="tbl"><table>
+          <thead><tr><th>광고주</th><th>내용</th><th>크리에이터</th></tr></thead>
+          <tbody><tr><td>H2 인터랙티브</td><td>No Straight Roads</td><td>지누</td></tr><tr><td>유비소프트</td><td>레인보우 식스 시즈</td><td>김뿡</td></tr><tr><td>라이엇 게임즈</td><td>와일드 리프트</td><td>탬탬버린</td></tr><tr><td>NVIDIA</td><td>GeForce RTX 3090</td><td>지누</td></tr><tr><td>블리자드 코리아</td><td>콜 오브 듀티: 워존</td><td>금사향</td></tr><tr><td>X.D글로벌</td><td>후궁의 법칙</td><td>나나양</td></tr><tr><td>엔젤게임즈</td><td>프로젝트 랜타디</td><td>김뿡</td></tr><tr><td>X.D글로벌</td><td>소녀전선</td><td>핑맨</td></tr><tr><td>네이쳐크리에이티브</td><td>크레인팝</td><td>탬탬버린</td></tr><tr><td>CDPR</td><td>사이버펑크 2077</td><td>김뿡</td></tr><tr><td>스타터</td><td>데빌북</td><td>탬탬버린</td></tr></tbody>
+        </table></div>
+        <p class="note">공식 사이트에 소개된 사례 중 현재 명단에 있는 크리에이터만 옮겼습니다.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="roster">
+  <div class="wrap">
+    <span class="eyebrow">CREATORS</span>
+    <div class="head">
+      <h2>픽셀네트워크 크리에이터</h2>
+      <p>지누 포함 26명, 팔로워 많은 순</p>
+      <div class="filters" id="filters" role="group" aria-label="스트리머 필터">
+        <button class="chipbtn" id="f-all" type="button" data-f="all" aria-pressed="true">전체</button>
+        <button class="chipbtn" id="f-100k" type="button" data-f="big" aria-pressed="false">팔로워 10만+</button>
+        <button class="chipbtn" id="f-soop" type="button" data-f="soop" aria-pressed="false">SOOP 채널</button>
+      </div>
+    </div>
+    <ul class="roster" id="rosterList"></ul>
+    <p class="note">팔로워 수는 2026년 11월 25일 치지직 기준입니다. 카드의 한 줄 소개는 각 채널 소개 문구에서 가져왔습니다. 명단은 나무위키 최근 판 기준이며, "위키 기재"는 채널 소개에서 소속을 확인하지 못한 채널입니다.</p>
+  </div>
+</section>
+
+<section class="stats" aria-label="숫자로 보는 픽셀">
+  <div class="wrap">
+    <div><strong>26<i>명</i></strong><span>이 페이지에 정리한 스트리머</span></div>
+    <div><strong>287<i>만+</i></strong><span>26개 채널 치지직 팔로워 합계</span></div>
+    <div><strong>2019<i>년</i></strong><span>12월 10일 설립 (나무위키 기재)</span></div>
+    <div><strong>3<i>명</i></strong><span>SOOP 채널도 있는 스트리머</span></div>
+  </div>
+</section>
+
+<section class="sec" id="cheer">
+  <div class="wrap cheer">
+    <div>
+      <span class="eyebrow">CHEER BOARD</span>
+      <h2>도트 한 칸으로<br>응원을 남겨 보세요</h2>
+      <p class="lead">32×20칸 보드에 6가지 색으로 그림을 그릴 수 있습니다.</p>
+      <ul class="ticks">
+        <li>색을 고르고 칸을 누르면 바로 찍힙니다</li>
+        <li>누른 채로 끌면 이어서 그려집니다</li>
+        <li>게시판에 올리면 다른 사람도 볼 수 있습니다</li>
+      </ul>
+    </div>
+    <div class="panel">
+      <canvas id="board" width="640" height="400" aria-label="응원 픽셀 보드. 칸을 눌러 색을 칠합니다."></canvas>
+      <div class="tools" id="tools" role="group" aria-label="색상 선택"></div>
+      <div class="panel-foot">
+        <button class="btn line" id="clearBoard" type="button">보드 비우기</button>
+        <button class="btn dark" id="heartBoard" type="button">하트 다시 그리기</button>
+        <small id="boardNote">자동 저장</small>
+      </div>
+      <div class="post" id="postRow" hidden>
+        <input id="nick" type="text" maxlength="12" placeholder="닉네임 (선택)" aria-label="닉네임">
+        <button class="btn dark" id="postBoard" type="button">게시판에 올리기</button>
+      </div>
+      <p class="note" id="postNote" aria-live="polite"></p>
+    </div>
+  </div>
+  <div class="wrap galwrap">
+    <h3 class="sub-h">응원 게시판</h3>
+    <p class="note" id="galNote">게시판을 불러오는 중입니다.</p>
+    <ul class="gal" id="gallery"></ul>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div>
+      <b class="logo">PIXEL FAN</b>
+      <p>팬이 만든 비공식 팬페이지</p>
+    </div>
+    <div>
+      <h3>PLATFORM</h3>
+      <p><a href="https://chzzk.naver.com" target="_blank" rel="noopener">치지직 chzzk.naver.com</a></p>
+      <p><a href="https://www.sooplive.co.kr" target="_blank" rel="noopener">SOOP sooplive.co.kr</a></p>
+      <p><a href="https://pixelnetwork.kr/" target="_blank" rel="noopener">픽셀네트워크 공식 사이트</a></p>
+    </div>
+    <div>
+      <h3>NOTICE</h3>
+      <p><strong>비공식 페이지</strong>픽셀네트워크 및 소속 스트리머와 관련이 없습니다.</p>
+      <p><strong>이미지</strong>프로필 이미지의 권리는 각 스트리머에게 있으며, 요청 시 내립니다.</p>
+      <p><strong>정보</strong>공식 사이트, 나무위키, 채널 소개를 바탕으로 정리해 실제와 다를 수 있습니다.</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+var css=getComputedStyle(document.documentElement);
+function v(n){return css.getPropertyValue(n).trim()}
+var PAL=[v('--p1'),v('--p2'),v('--p3'),v('--p4'),v('--p5'),v('--p6')];
+var INK=v('--navy'),INK2=v('--navy-line');
+
+/* ---- roster ---- */
+var R=[["지누", "2086f44c7b09a17cef6786f21389db3b", 160980, "설립자", "", "", 0], ["모라라", "6bd0bb97d31365e7834d8113bb01d889", 67873, "소속 표기", "노래하는 하트 개복치", "molalamolala", 1], ["눈꽃", "343fc0e877aa8ca0cad5106b33d6fa95", 59509, "소속 표기", "", "", 2], ["루다", "3e9272616070e9f66cc4afd9e69753c2", 24447, "소속 표기", "종합게임 방송, 수·목 정기휴방", "", 3], ["채현찌", "0e604eba7206f04b1e5f15e0a1cb2616", 107997, "소속 표기", "매일 오후 8시에 나타나는 치직공무원", "", 4], ["너불", "af3323d30e11ae42c39d7203c7e07fa2", 114245, "소속 표기", "", "", 5], ["행돌", "6cac96d5c9b7a9fd28903aa32fc61749", 132575, "소속 표기", "레디언트 연막싸개", "", 6], ["뇨롱이", "c65ca7335aaeb2ca0c985078223017c0", 75450, "소속 표기", "순금 99.9% 뇨롱이 등장!", "", 7], ["나나양", "80b36a0ae8e887e893ce0014dbfece4a", 130075, "위키 기재", "우주대스타입니다.", "", 8], ["이도원", "9186c4b8304a448878c86395355f0a75", 81832, "소속 표기", "안녕하세요 이도원입니다", "", 9], ["히나리 페뇨", "f2607c885c65b6776b9cf5bfb473753c", 47102, "소속 표기", "", "", 10], ["감블러", "0974bf2ded8c3e124797f7be6d1bdbb5", 56957, "위키 기재", "", "9ambler", 11], ["강지", "b5ed5db484d04faf4d150aedd362f34b", 319241, "위키 기재", "", "", 12], ["금사향", "5f800579267362c952f76f3c6fe695b2", 101983, "위키 기재", "", "", 13], ["김똘복", "57fd052838434874068eafdd2cb581b3", 48681, "위키 기재", "", "", 14], ["김뚜띠", "2eee29ce69664154d8bc478825941259", 152251, "위키 기재", "저에요", "", 15], ["김뿡", "17f0cfcba4ff608de5eabb5110d134d0", 146349, "위키 기재", "", "", 16], ["꽃핀", "a86031fdfeb1b223ad1172cf6ba4b94e", 66284, "위키 기재", "진짜 리얼 99% 꽃핀", "", 17], ["남봉", "ac6a03808bffbe58b3bfb0e25271836e", 115580, "소속 표기", "", "", 18], ["악녀", "6a8b6a54e6c295246249aed782bd345e", 68282, "위키 기재", "", "", 19], ["연비니", "371259eaf5ec1635b4807b612272f431", 66608, "소속 표기", "", "", 20], ["윤이샘", "3fbe35e19e546bda4f4534869d35ac08", 16396, "위키 기재", "생각보다 이것저것 잘 하는 사람", "yoonesaem", 21], ["이초홍", "ed21d36a44d1956520189a784afc27ed", 103444, "위키 기재", "게임좋아하는 이초홍", "", 22], ["임나은", "0de024a1ca4a64f1a23a95ff9eeee5a5", 132697, "소속 표기", "겜잘스", "", 23], ["탬탬버린", "a7e175625fdea5a7d98428302b7aa57f", 336485, "위키 기재", "훌라춤을 춘다 탬버린!", "", 24], ["핑맨", "0dcec72cd1033032a77dfced6c0c91f8", 146242, "소속 표기", "", "", 25]];
+R=[R[0]].concat(R.slice(1).sort(function(a,b){return b[2]-a[2];}));
+function el(t,c,x){var e=document.createElement(t);if(c)e.className=c;if(x)e.textContent=x;return e;}
+function link(href,txt){var a=el('a','',txt);a.href=href;a.target='_blank';a.rel='noopener';return a;}
+var list=document.getElementById('rosterList');
+R.forEach(function(r,idx){
+  var li=el('li');li.dataset.big=r[2]>=100000?'1':'';li.dataset.soop=r[5]?'1':'';
+  var im=document.createElement('img');im.src='img/s'+r[6]+'.jpg';im.alt=r[0]+' 치지직 프로필 이미지';im.width=240;im.height=180;im.loading='lazy';
+  var body=el('div','body'),meta=el('div','meta');
+  meta.appendChild(el('span','tag'+(r[3]==='위키 기재'?' gray':''),r[3]));meta.appendChild(el('span','','치지직'+(r[5]?' · SOOP':'')));
+  var fol=el('p','fol');fol.appendChild(el('span','','팔로워'));fol.appendChild(document.createTextNode(r[2].toLocaleString('ko-KR')));
+  var links=el('div','links');
+  links.appendChild(link('https://chzzk.naver.com/'+r[1],'치지직 채널 →'));
+  if(r[5])links.appendChild(link('https://ch.sooplive.co.kr/'+r[5],'SOOP 채널 →'));
+  body.appendChild(meta);body.appendChild(el('h3','',r[0]));body.appendChild(el('p','quote',r[4]));body.appendChild(fol);body.appendChild(links);
+  li.appendChild(im);li.appendChild(body);list.appendChild(li);
+});
+var fb=document.getElementById('filters');
+fb.addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;
+  [].forEach.call(fb.children,function(x){x.setAttribute('aria-pressed',String(x===b));});
+  var f=b.dataset.f;[].forEach.call(list.children,function(li){li.hidden=!(f==='all'||li.dataset[f]);});});
+
+/* ---- board ---- */
+var bc=document.getElementById('board'),bx=bc.getContext('2d'),BW=32,BH=20,BS=20,KEY='pixel-fan-board';
+var HEART=['01100110','11111111','11111111','11111111','01111110','00111100','00011000'];
+var grid,cur=0,note=document.getElementById('boardNote');
+function heart(){grid=new Array(BW*BH).fill(-1);HEART.forEach(function(r,y){for(var x=0;x<8;x++)if(r[x]==='1')grid[(6+y)*BW+12+x]=2;});}
+function load(){try{var g=JSON.parse(localStorage.getItem(KEY));if(Array.isArray(g)&&g.length===BW*BH){grid=g;return;}}catch(e){}heart();}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(grid));}catch(e){note.textContent='저장할 수 없는 브라우저입니다';}}
+function drawBoard(){
+  bx.fillStyle=INK;bx.fillRect(0,0,bc.width,bc.height);
+  for(var y=0;y<BH;y++)for(var x=0;x<BW;x++){var c=grid[y*BW+x];
+    if(c>=0){bx.fillStyle=PAL[c];bx.fillRect(x*BS+1,y*BS+1,BS-2,BS-2);}
+    else{bx.fillStyle=INK2;bx.fillRect(x*BS+9,y*BS+9,2,2);}}
+}
+var lastX=-1,lastY=-1;
+function dot(x,y){if(x<0||y<0||x>=BW||y>=BH||grid[y*BW+x]===cur)return false;grid[y*BW+x]=cur;return true;}
+/* 빠르게 끌어도 칸이 끊기지 않도록 직전 칸에서 현재 칸까지 선으로 잇는다 */
+function paint(e){var r=bc.getBoundingClientRect(),x=Math.floor((e.clientX-r.left)/r.width*BW),y=Math.floor((e.clientY-r.top)/r.height*BH);
+  var ch=false;
+  if(lastX<0){ch=dot(x,y);}
+  else{var x0=lastX,y0=lastY,dx=Math.abs(x-x0),dy=Math.abs(y-y0),sx=x0<x?1:-1,sy=y0<y?1:-1,err=dx-dy;
+    for(;;){if(dot(x0,y0))ch=true;if(x0===x&&y0===y)break;var e2=2*err;if(e2>-dy){err-=dy;x0+=sx;}if(e2<dx){err+=dx;y0+=sy;}}}
+  lastX=x;lastY=y;if(ch)drawBoard();}
+var down=false;
+bc.addEventListener('pointerdown',function(e){down=true;lastX=lastY=-1;try{bc.setPointerCapture(e.pointerId);}catch(_){ }paint(e);});
+bc.addEventListener('pointermove',function(e){if(down)paint(e);});
+function up(){if(down){down=false;save();}}
+bc.addEventListener('pointerup',up);bc.addEventListener('pointercancel',up);
+var tools=document.getElementById('tools');
+function mk(i,label){var b=document.createElement('button');b.type='button';b.className='sw'+(i<0?' erase':'');b.id='sw'+(i<0?'x':i);
+  if(i>=0)b.style.setProperty('--c',PAL[i]);else b.textContent='×';
+  b.setAttribute('aria-label',label);b.setAttribute('aria-pressed',String(i===cur));
+  b.addEventListener('click',function(){cur=i;[].forEach.call(tools.children,function(t){t.setAttribute('aria-pressed','false')});b.setAttribute('aria-pressed','true');});
+  tools.appendChild(b);}
+['민트','노랑','코랄','하늘','보라','하양'].forEach(function(l,i){mk(i,l);});mk(-1,'지우개');
+document.getElementById('clearBoard').addEventListener('click',function(){grid=new Array(BW*BH).fill(-1);drawBoard();save();});
+document.getElementById('heartBoard').addEventListener('click',function(){heart();drawBoard();save();});
+load();drawBoard();
+
+/* ---- shared board (Supabase) ----
+   게시판 저장소 설정: Supabase 프로젝트의 URL과 공개(anon/publishable) 키를 넣으면 게시판이 켜집니다.
+   테이블과 권한은 supabase.sql 을 SQL Editor에서 한 번 실행해 만듭니다. */
+var SUPA_URL='https://ymnwgrhuhdujvsqjsopt.supabase.co';
+var SUPA_KEY='sb_publishable_wZS8V4N0KXcyOKyOryxJVQ_Khb9g_4j';
+var gal=document.getElementById('gallery'),galNote=document.getElementById('galNote'),postRow=document.getElementById('postRow'),
+    postBtn=document.getElementById('postBoard'),postNote=document.getElementById('postNote'),nick=document.getElementById('nick');
+var busy=false,COOL=30000,LAST='pixel-fan-last-post';
+function enc(g){return g.map(function(c){return c<0?'.':String(c);}).join('');}
+function thumb(str){var c=document.createElement('canvas');c.width=BW*4;c.height=BH*4;var x=c.getContext('2d');x.fillStyle=INK;x.fillRect(0,0,c.width,c.height);
+  for(var i=0;i<BW*BH;i++){var ch=str.charCodeAt(i)-48;if(ch>=0&&ch<PAL.length){x.fillStyle=PAL[ch];x.fillRect((i%BW)*4,Math.floor(i/BW)*4,4,4);}}return c;}
+function api(path,opt){opt=opt||{};opt.headers=Object.assign({apikey:SUPA_KEY,Authorization:'Bearer '+SUPA_KEY},opt.headers||{});
+  return fetch(SUPA_URL.replace(/\/$/,'')+'/rest/v1/'+path,opt).then(function(r){if(!r.ok)throw new Error('http '+r.status);return r;});}
+function renderGal(rows){
+  rows=rows.filter(function(p){return p&&typeof p.g==='string'&&p.g.length===BW*BH;});
+  gal.textContent='';
+  galNote.textContent=rows.length?('올라온 그림 '+rows.length+'개'):'아직 올라온 그림이 없습니다. 위 보드에 그리고 "게시판에 올리기"를 누르면 여기에 보입니다.';
+  rows.forEach(function(p){
+    var li=el('li'),meta=el('div','gmeta'),d=new Date(p.created_at);
+    meta.appendChild(el('b','',(typeof p.n==='string'&&p.n.trim())?p.n.slice(0,12):'익명'));
+    meta.appendChild(el('time','',isNaN(d)?'':(d.getMonth()+1)+'.'+d.getDate()));
+    li.appendChild(thumb(p.g));li.appendChild(meta);gal.appendChild(li);});
+}
+function loadGal(){return api('cheers?select=g,n,created_at&order=created_at.desc&limit=200').then(function(r){return r.json();}).then(renderGal,
+  function(){galNote.textContent='게시판을 불러오지 못했습니다. 잠시 뒤 새로고침해 주세요.';});}
+postBtn.addEventListener('click',function(){
+  if(busy)return;
+  if(grid.every(function(c){return c<0;})){postNote.textContent='먼저 보드에 그림을 그려 주세요.';return;}
+  var last=0;try{last=Number(localStorage.getItem(LAST))||0;}catch(e){}
+  if(Date.now()-last<COOL){postNote.textContent='방금 올렸습니다. 30초 뒤에 다시 올릴 수 있어요.';return;}
+  busy=true;postBtn.disabled=true;postNote.textContent='올리는 중입니다.';
+  api('cheers',{method:'POST',headers:{'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify({g:enc(grid),n:nick.value.trim().slice(0,12)})})
+   .then(function(){try{localStorage.setItem(LAST,String(Date.now()));}catch(e){}postNote.textContent='게시판에 올렸습니다.';return loadGal();},
+         function(){postNote.textContent='올리지 못했습니다. 잠시 뒤 다시 시도해 주세요.';})
+   .then(function(){busy=false;postBtn.disabled=false;});
+});
+if(SUPA_URL&&SUPA_KEY){postRow.hidden=false;loadGal();}
+else{galNote.textContent='게시판은 준비 중입니다. 곧 누구나 그림을 올릴 수 있게 됩니다.';}
+})();
+</script>
+</body>
+</html>
