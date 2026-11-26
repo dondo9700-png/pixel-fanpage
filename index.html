@@ -441,7 +441,7 @@ fb.addEventListener('click',function(e){var b=e.target.closest('button');if(!b)r
 var home=document.getElementById('home'),topEl=document.querySelector('.top'),intro=document.getElementById('top');
 var avs=R.map(function(r){
   var a=el('a','av'),i=el('span','av-i'),im=document.createElement('img');
-  a.href='#roster';a.title=r[0];a.tabIndex=-1;a.setAttribute('aria-hidden','true');
+  a.href='https://chzzk.naver.com/'+r[1];a.target='_blank';a.rel='noopener';a.title=r[0]+' 치지직 채널';a.tabIndex=-1;a.setAttribute('aria-hidden','true');
   im.src='img/s'+r[6]+'.jpg';im.alt='';im.width=240;im.height=180;
   i.appendChild(im);a.appendChild(i);home.appendChild(a);return a;});
 function shuffle(n){var o=[];for(var i=0;i<n;i++)o.push(i);for(i=n-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),t=o[i];o[i]=o[j];o[j]=t;}return o;}
@@ -459,6 +459,10 @@ function place(){
 }
 /* 계속 흐르기: 사진마다 화면 가장자리 바깥의 무작위 지점에서 나타나 가운데로 흘러가며 작아지고 사라진 뒤, 새 지점에서 다시 시작한다 */
 var anims=[],reduce=!!(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches);
+/* 마우스를 올리면 그 사진만 멈춰서 누르기 쉽게 한다 */
+avs.forEach(function(a,k){
+  a.addEventListener('pointerenter',function(e){if(e.pointerType==='mouse'&&anims[k])anims[k].pause();});
+  a.addEventListener('pointerleave',function(){if(anims[k]&&anims[k].playState==='paused')anims[k].play();});});
 function stopFlow(){anims.forEach(function(x){if(x){x.onfinish=null;x.cancel();}});anims=[];}
 function drift(a,k,first){
   var W=home.clientWidth,H=home.clientHeight;if(!W||!H||!home.classList.contains('on'))return;
