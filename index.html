@@ -60,6 +60,11 @@ html.js .page.on{display:block}
   mask-image:radial-gradient(closest-side,#000 46%,rgba(0,0,0,.55) 72%,transparent 98%);
   -webkit-mask-image:radial-gradient(closest-side,#000 46%,rgba(0,0,0,.55) 72%,transparent 98%)}
 .amb-l video{width:100%;height:100%;object-fit:cover;display:block}
+/* 검증된 유튜브 쇼츠·영상: 무음 자동재생을 화면에 꽉 차게 크롭해 희미하게 흘린다 */
+.amb-v{position:absolute;inset:0;z-index:0;overflow:hidden;opacity:.32;pointer-events:none}
+.amb-v iframe{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);border:0;pointer-events:none;filter:saturate(1.06) contrast(1.02)}
+.amb-v.is-s iframe{width:100vw;height:177.78vw;min-width:56.25vh;min-height:100%}
+.amb-v.is-w iframe{width:100vw;height:56.25vw;min-width:177.78vh;min-height:100%}
 .amb-l.on .amb-w{animation:washPan 34s ease-in-out infinite alternate}
 .amb-l.on .amb-p{animation:portPan 28s ease-in-out infinite alternate}
 @keyframes washPan{from{transform:scale(1.02) translate(-1.2%,.8%)}to{transform:scale(1.12) translate(1.2%,-1%)}}
@@ -86,6 +91,18 @@ html.js .page.on{display:block}
 .sdot:hover{opacity:.85}
 .sdot[aria-current="true"]{opacity:1;border-color:#a98bff;box-shadow:0 0 0 2px rgba(169,139,255,.3);transform:scale(1.1)}
 .sdot[aria-current="true"] img{filter:none}
+/* 방송 중 표시: LIVE_ENDPOINT 응답이 왔을 때만 붙는다 */
+.sdot{overflow:visible;position:relative}
+.sdot img{border-radius:50%}
+.sdot.live::after{content:"";position:absolute;top:-1px;right:-1px;width:9px;height:9px;border-radius:50%;background:#ff3b30;border:2px solid #141020;box-shadow:0 0 0 1px rgba(255,59,48,.35);box-sizing:content-box}
+.dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:#ff3b30;box-shadow:0 0 0 3px rgba(255,59,48,.16);vertical-align:middle;flex:none;animation:livePulse 1.8s ease-in-out infinite}
+@keyframes livePulse{0%,100%{opacity:1}50%{opacity:.4}}
+.livetag{display:inline-block;font-family:var(--num);font-size:.56rem;font-weight:700;letter-spacing:.1em;color:#ff7268;border:1px solid rgba(255,114,104,.45);border-radius:999px;padding:1px 6px;margin-left:7px;vertical-align:2px}
+.spot-now b .dot{margin-right:7px}
+.roster h3 .dot{margin-right:7px;vertical-align:2px}
+#cafeStreams .dot{width:6px;height:6px;box-shadow:none;margin:0 -3px 0 1px}
+.cp-stream.live::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:#ff3b30;margin-right:5px;vertical-align:middle}
+@media(prefers-reduced-motion:reduce){.dot{animation:none}}
 .spot-now{display:flex;align-items:baseline;gap:9px;font-size:.82rem;color:#cfc9e6;min-width:0;flex-wrap:wrap;justify-content:center;text-align:center}
 .spot-now b{font-size:.98rem;font-weight:700;color:#fff}
 .spot-now span{color:#847da0;font-size:.76rem}
@@ -486,7 +503,7 @@ footer strong{color:var(--on-navy);margin-right:6px}
   <div class="home-c">
     <em>pixel</em>
     <b>크리에이터 26명</b>
-    <small>크리에이터가 한 명씩 배경에 흐르고 있어요</small>
+    <small>크리에이터가 매번 랜덤으로 한 명씩 배경에 흐르고 있어요</small>
   </div>
   <div class="spot">
     <p class="spot-lab">Streamer Spotlight</p>
@@ -772,6 +789,41 @@ var INK=v('--navy'),INK2=v('--navy-line');
 
 /* ---- roster ---- */
 var R=[["지누", "2086f44c7b09a17cef6786f21389db3b", 160980, "설립자", "", "", 0], ["모라라", "6bd0bb97d31365e7834d8113bb01d889", 67873, "소속 표기", "노래하는 하트 개복치", "molalamolala", 1], ["눈꽃", "343fc0e877aa8ca0cad5106b33d6fa95", 59509, "소속 표기", "", "", 2], ["루다", "3e9272616070e9f66cc4afd9e69753c2", 24447, "소속 표기", "종합게임 방송, 수·목 정기휴방", "", 3], ["채현찌", "0e604eba7206f04b1e5f15e0a1cb2616", 107997, "소속 표기", "매일 오후 8시에 나타나는 치직공무원", "", 4], ["너불", "af3323d30e11ae42c39d7203c7e07fa2", 114245, "소속 표기", "", "", 5], ["행돌", "6cac96d5c9b7a9fd28903aa32fc61749", 132575, "소속 표기", "레디언트 연막싸개", "", 6], ["뇨롱이", "c65ca7335aaeb2ca0c985078223017c0", 75450, "소속 표기", "순금 99.9% 뇨롱이 등장!", "", 7], ["나나양", "80b36a0ae8e887e893ce0014dbfece4a", 130075, "위키 기재", "우주대스타입니다.", "", 8], ["이도원", "9186c4b8304a448878c86395355f0a75", 81832, "소속 표기", "안녕하세요 이도원입니다", "", 9], ["히나리 페뇨", "f2607c885c65b6776b9cf5bfb473753c", 47102, "소속 표기", "", "", 10], ["감블러", "0974bf2ded8c3e124797f7be6d1bdbb5", 56957, "위키 기재", "", "9ambler", 11], ["강지", "b5ed5db484d04faf4d150aedd362f34b", 319241, "위키 기재", "", "", 12], ["금사향", "5f800579267362c952f76f3c6fe695b2", 101983, "위키 기재", "", "", 13], ["김똘복", "57fd052838434874068eafdd2cb581b3", 48681, "위키 기재", "", "", 14], ["김뚜띠", "2eee29ce69664154d8bc478825941259", 152251, "위키 기재", "저에요", "", 15], ["김뿡", "17f0cfcba4ff608de5eabb5110d134d0", 146349, "위키 기재", "", "", 16], ["꽃핀", "a86031fdfeb1b223ad1172cf6ba4b94e", 66284, "위키 기재", "진짜 리얼 99% 꽃핀", "", 17], ["남봉", "ac6a03808bffbe58b3bfb0e25271836e", 115580, "소속 표기", "", "", 18], ["악녀", "6a8b6a54e6c295246249aed782bd345e", 68282, "위키 기재", "", "", 19], ["연비니", "371259eaf5ec1635b4807b612272f431", 66608, "소속 표기", "", "", 20], ["윤이샘", "3fbe35e19e546bda4f4534869d35ac08", 16396, "위키 기재", "생각보다 이것저것 잘 하는 사람", "yoonesaem", 21], ["이초홍", "ed21d36a44d1956520189a784afc27ed", 103444, "위키 기재", "게임좋아하는 이초홍", "", 22], ["임나은", "0de024a1ca4a64f1a23a95ff9eeee5a5", 132697, "소속 표기", "겜잘스", "", 23], ["탬탬버린", "a7e175625fdea5a7d98428302b7aa57f", 336485, "위키 기재", "훌라춤을 춘다 탬버린!", "", 24], ["핑맨", "0dcec72cd1033032a77dfced6c0c91f8", 146242, "소속 표기", "", "", 25]];
+/* ---- 크리에이터별 공식 유튜브 쇼츠·대표 영상 ----
+   유튜브 oembed로 실제 존재·임베드 가능한 영상만 확인해 넣었다. [영상ID, 설명, "s"=쇼츠 | "v"=일반 영상]
+   홈 히어로 배경으로 무음 재생되고, 크리에이터가 나올 때마다 그중 하나를 무작위로 고른다. */
+var V={"지누":[["nGN2yrXGT20","밖에서 아무거나 주우면 안 되는 이유 - 리썰컴퍼니 하이라이트","s"],["XzfPlg4AVoM","승부사 탬탬버린","s"],["ks13iOEp7cM","자다가 봉변당한 사람","s"],["GW1v2euD2qs","금발 태닝 양아치","s"]],
+"모라라":[["4T-lYMlzxSs","너 성이 모야?","s"],["hzrxz2pXafs","버튜버의 나이는 아무도 모른다","s"],["2Gu-ocXWdo8","모라라 저리 가봐","s"],["xEz0L-Q3v8E","귀여워서 참을 수 없는 부키 놀리기","s"]],
+"눈꽃":[["K-eXlIiN8gs","눈꽃이 해본다! 양띵누나의 마약 옥수수 따라잡기! [양띵TV눈꽃]","v"],["WoQZIqo0eSg","동갑내기 친구 눈꽃♥다주 영상 모음! [양띵TV눈꽃]","v"],["_JDTtOiPOus","내가 아는 친구들이..마크 NPC로 됐다고? 양띵크루 마크NPC로 만나보기! 마크 휴먼 몹 모드 [양띵TV눈꽃]minecraft Human mob mod","v"]],
+"루다":[["f_mLMUlG12g","원하는 시간에 일어나는 법 개꿀팁ㅋㅋㅋ #Shorts","s"],["W8uMB6Zzam4","깜놀주의! 심장마비 오는줄ㅠㅠㅠ #루다 #게임 #공포게임 #shorts #후즈앳더도어","s"],["sD3qlB9TyJw","고양이가 블루 뺏었어요 진짜로 #shorts","s"],["yBbOrncUluo","배그 AI듀오 내 말이 말 같지 않아?!","s"]],
+"채현찌":[["86vCdq8wW3A","헬륨가스 마시고 스트리머 속이기ㅋㅋ #shorts","s"],["ckpovGpaqsw","촉각슈트로 느끼는 온라인 성회롱ㄷㄷ #shorts","s"],["LvB44UiWNhc","돈에 눈이 먼 돈미새 그녀들... #shorts","s"],["Wh6_RMaEsNw","윤가놈피셜 채현찌는 현직 아이돌 #shorts","s"]],
+"너불":[["1NcbmFsBbf4","스트리머 관계도 (feat.핑맨) #shorts #너불 #핑맨","s"],["aNvXDD3ZTe0","너한테는 안 좋은 날 #너불 #shorts #아야츠노유니","s"],["8a2EjEtY6J8","이게 누굴 죽이려고 #너불 #shorts #아카캉","s"],["acX_tK82CDQ","강지님과 노래 녹음할 땐.. #너불 #shorts #강지","s"]],
+"행돌":[["l-z6oESkis4","프로들도 감탄한 역대급 셰리프 에이스","s"],["2_TEWCHF6Ls","내가 하고도 어이없었던 1vs5 역대급 에이스","s"],["xVQ--4xDMsw","이코 라운드에 벌어진 역대급 셰리프 1vs5 에이스","s"],["EUcJDaqL7kY","레이나로 ESP를 쓰면 이런 느낌일까?","s"]],
+"뇨롱이":[["yPEVsDU_fQA","배그 중국 따거들은 멘트도 다르네ㅋㅋㅋㅋ","s"],["K5luwuT7ukI","버튜버계 명태 대뇨롱","s"],["U7AOQ2Lg2RQ","입양당한 뇨롱이(누렁이x)","s"],["mzBVqjPW8fc","한 순간에 나락 갈 뻔한 스트리머","s"]],
+"나나양":[["8WUUzoCoEGI","픽셀 장녀의 신입 기강 잡는 법","s"],["jFrBYGZo5cM","나는 탬탬버린에게 굴복했다.","s"],["qM7zNlatPFE","픽셀 막내가 흑수정을 처음 만났을 때","s"],["vJ2MFPUUudU","덕몽어스에서 한 번에 10킬하는 법","s"]],
+"이도원":[["A0N-5u_JtCo","공겜 도중 화장실 가면 안되는 이유","s"],["DO7YsY0DVDU","뿅망치 살인마","s"],["mPPZ3E56kds","전설의 게임","s"],["7Jo6u-p1nE0","파라의 마지막 공연","s"]],
+"히나리 페뇨":[["922-j8EO-YY","54초만에 심쿵사하는 영상","v"],["y2otgTFudAU","【페뇨】  소풍 그라운드~!! ( 'ω'o[ Feat.견자희,유키드,코아 ]o)","v"],["-4QqdChZdvc","페뇨에게 탬버린을 주면 일어나는일...","v"]],
+"감블러":[["4AY3xjLZPPg","아봉권","s"],["CfnG_N_TU4U","탬탬버린의 1호...(더보기) @애니메이션","s"],["2QUflvLc49c","픽셀 합방 샌드박스 이적","s"],["5x_qKQiMBgY","흑화육수","s"]],
+"강지":[["uzh5xpMhafY","감자를 사랑하는 4기생들 ㅋㅋㅋㅋㅋ #강지 #어비스 #4기생","s"],["oVDTMbOzsIg","아빠가 누구야? #강지 #히나 #감자툰","s"],["sonilShpzZE","페뇨는 나이 안 먹어(?) #감자툰 #페뇨 #임나은","s"],["YnM-3EvPLQU","신호등 자매의 윙크 (｡•̀ ᴗ -)✧ #강지 #쇼츠 #밈","s"]],
+"금사향":[["m_KWAJhXkWg","김진우한테 있는 거라곤 목소리뿐이었는데... #shorts","s"],["mUDXvZ2dbE8","우리 썸타는거였어? #shorts","s"],["uKJeRBsGqRo","우리 둘 만의 비밀..ㅎ #shorts","s"],["XbPrM-dUStc","#shorts 승천향","s"]],
+"김똘복":[["uFGvMXlVXPg","결혼해줘제발 #shorts","s"],["gDeAfs1qNAo","대륙의 스케일 #shorts","s"],["deeIMo2xc3E","연륜차이","s"],["fHHbd5cqyVs","댝!!","s"]],
+"김뚜띠":[["qslxx5iyUGw","뚜다다다","s"],["7VS9QlFWRd8","엉...진짜네...?","v"],["Y2hTfbXKlN0","김뚜띠｜초보자를 위한 ★2x2크기,단 4칸안에★ 집만들기! ｜마인크래프트:간단건축｜Minecraft","v"],["KI7cp1VZvLE","모드없이 마크에서 발판이 필요없는 자동문 만들기! [마인크래프트 PC/PE:기묘한실험실] Minecraft PC/PE [김뚜띠]","v"]],
+"김뿡":[["zebNVk7ZfHo","공포가 불러온 피지컬 #shorts","s"],["riJUr_KC_jk","마을의 \"약탈자\"가 된 이유 [ 악어 놀이터 서버 아카츠키 ] #shorts","s"],["yE_8hWnvXtU","2년동안 한 번도 채팅 안 친 시청자가 처음으로 꺼낸 말ㅋㅋㅋㅋㅋㅋㅋㅋㅋ #shorts","s"],["psmrNCQfKrI","아카츠키의 화려한 데뷔식 (악어의 놀이터 서버) #shorts","s"]],
+"꽃핀":[["jZZskbovoZY","💔DATEN ROUTE💔","s"],["-b5PV23m870","🍔 I AM EATING HAMBURGERS 🍔","s"],["kPCvwxccVPc","【꽃핀】급합급함!!! ⚠️언니가 좋아? 여동생이 좋아?⚠️","s"],["tveM94bXHgk","【꽃핀】 이제 성인되는 여동생 환상 박살내기","s"]],
+"남봉":[["t6IBt3qUu0s","봉누도 2 15일차 교정공이 노는 법","v"],["p6U3K5wRvc4","봉누도 2 17일차, 18일차 감사했습니다.","v"],["iQI6Is9X6DI","봉누도 2 엔딩 영상","v"]],
+"악녀":[["KTzbwAvSI2U","리썰컴퍼니 공포영화의 한장면 ㄷㄷ.. #lethalcompany #shorts","s"],["f9mZs_9a1rU","요즘핫한게임 잘 그릴필요가 없는이유 ㅋㅋ #shorts  #게임","s"],["tdoCO8yxam4","리썰컴퍼니 가짜문모드를 아시나요? #lethalcompany #shorts","s"],["Wu2Jvj3Ww5M","리썰컴퍼니 \"타이탄\" 맵 1분요약 #shorts #lethalcompany","s"]],
+"연비니":[["aMQfJWfzrZc","바보 아니에요","s"],["K9_UGZdsQ2o","새벽에 울리는 전화벨","s"],["btWSKNiLo_U","죽은 강아지가 그리워서 찾아온 곳","s"],["cUCgeKiodck","처음부터 다시 생각해볼까요?","s"]],
+"윤이샘":[["7Px-6e9vOCo","핸드폰 보여줘 ㅎ","s"],["HPrLJb2eoh8","윤이샘은 도지코인이 밉다 #shorts","s"],["KF4ruNiNCcc","설백 & 윤이샘 현실 합방 예고 #shorts","s"],["MG4XIaRvmUA","히든 보이스 액터 -화산귀환편-","s"]],
+"이초홍":[["vZyzLPdtOeQ","츄츄초의 유아퇴행  #이초홍 #게임 #증바람 #리그오브레전드 #롤","s"],["yUG3ZcfTGxs","그날 츄츄초는 떠올렸다  #이초홍 #게임 #증바람 #리그오브레전드 #롤","s"],["_Jlv_cZs9SI","딱딱하고 작은것ㅋㅋ #이초홍 #vtuber","s"],["Xoer59tUi48","죽기전에 전기톱소리를 #이초홍 #vtuber #이터널리턴 #게임 #이리 #무한섬","s"]],
+"임나은":[["rV9JoEOWWhI","\"금발\" 임나은을 본 스트리머의 반응 ㅋㅋㅋㅋ","s"],["1zgOs6etptQ","버튜버 쓰리 사이즈 재는 법...? #shorts","s"],["TSR2iaxJNQ8","금사향 몸에 갇힌 임나은의 영혼 ㅋㅋㅋㅋ #shorts","s"],["Ghw3oaErj4M","교복 치마 공감 ㅋㅋㅋ #shorts","s"]],
+"탬탬버린":[["e3Sjjstg3zs","【 탬탬버린 】 - 휴방사유 월드컵 2","v"],["yEFQ-9JTPcE","【 탬탬버린 】 - 진짜 웃다가 죽을뻔한 코렛트 배그 월드컵","v"],["x6K3OQznhnE","【 탬탬버린 】 - 김진우 개웃겨","v"],["A3aruq7gV1o","【 탬탬버린 】 - 휴방 사유 월드컵","v"]],
+"핑맨":[["hYX5c9e_HGk","신라텐세","s"],["FccWnCNLpnE","고등학생 남자 목소리 좋을 때 반응","s"],["dwBN9i7mLFQ","아이스 에이지","s"]]};
+
+/* 홈 히어로는 페이지를 열 때마다 다른 크리에이터부터 나오도록 순서를 섞는다 (명단 정렬에는 영향 없음) */
+var ORD=R.map(function(_,i){return i;});
+function shuffleOrder(){for(var i=ORD.length-1;i>0;i--){var j=Math.random()*(i+1)|0;var t=ORD[i];ORD[i]=ORD[j];ORD[j]=t;}}
+shuffleOrder();
+
 function el(t,c,x){var e=document.createElement(t);if(c)e.className=c;if(x)e.textContent=x;return e;}
 function link(href,txt){var a=el('a','',txt);a.href=href;a.target='_blank';a.rel='noopener';return a;}
 var list=document.getElementById('rosterList'),rcount=document.getElementById('rosterCount'),
@@ -801,7 +853,11 @@ function card(r){
   var links=el('div','links');
   links.appendChild(link('https://chzzk.naver.com/'+r[1],'치지직 채널 →'));
   if(r[5])links.appendChild(link('https://ch.sooplive.co.kr/'+r[5],'SOOP 채널 →'));
-  body.appendChild(meta);body.appendChild(el('h3','',r[0]));
+  body.appendChild(meta);
+  var h3=el('h3');
+  if(r.live){var hd=el('span','dot');hd.setAttribute('aria-label','방송 중');h3.appendChild(hd);}
+  h3.appendChild(document.createTextNode(r[0]));
+  body.appendChild(h3);
   if(r[4])body.appendChild(el('p','quote',r[4])); /* 소개가 없는 카드는 빈 줄을 넣지 않는다 */
   body.appendChild(fol);body.appendChild(links);
   li.appendChild(im);li.appendChild(body);return li;
@@ -826,16 +882,50 @@ renderRoster();
    api.chzzk.naver.com 은 브라우저 교차 출처(CORS) 요청에 Allow-Origin 헤더를 돌려주지 않아
    정적 페이지에서 직접 부를 수 없다. 프록시/워커 주소를 LIVE_ENDPOINT 에 넣으면 켜지며,
    응답은 {live:true/false} 형태를 기대한다. */
-var LIVE_ENDPOINT='';
+/* Supabase Edge Function 프록시가 {"live":["chzzk_id",...]} 형태로 한 번에 돌려준다.
+   아직 배포되지 않았거나 네트워크가 막혀 있으면(404·CORS 실패) 아무 흔적 없이 넘어간다. */
+var LIVE_ENDPOINT='https://ymnwgrhuhdujvsqjsopt.supabase.co/functions/v1/chzzk-live';
+var LIVE_INTERVAL=180000,LIVE_NAMES={};
+function isLive(name){return !!LIVE_NAMES[name];}
+function liveIds(d){
+  var raw=null;
+  if(Array.isArray(d))raw=d;
+  else if(d&&Array.isArray(d.live))raw=d.live;
+  else if(d&&Array.isArray(d.ids))raw=d.ids;
+  else if(d&&Array.isArray(d.channels))raw=d.channels;
+  else if(d&&d.live&&typeof d.live==='object'){
+    raw=Object.keys(d.live).filter(function(k){return d.live[k];});
+  }
+  if(!raw)return null;
+  return raw.map(function(x){
+    if(typeof x==='string')return x;
+    return x&&(x.channelId||x.id||x.chzzk_id)||'';
+  }).filter(Boolean);
+}
+function liveApply(ids){
+  if(!ids)return;
+  var map={};
+  ids.forEach(function(x){map[x]=1;});
+  LIVE_NAMES={};
+  base.forEach(function(r){r.live=!!map[r[1]];if(r.live)LIVE_NAMES[r[0]]=1;});
+  var chip=document.getElementById('f-live');if(chip)chip.hidden=false;
+  renderRoster();               /* 크리에이터 카드: 이름 옆 빨간 점 + LIVE 태그 */
+  spotUpdate();                 /* 홈 히어로: 이름 옆 점, 아바타 도트 위 점 */
+  if(typeof cafe!=='undefined'&&cafe&&cafe.ready)cafeRender();   /* 카페: 스트리머 필터·글 태그의 점 */
+  else if(typeof cafeBuildStreams==='function')cafeBuildStreams();
+}
 function initLive(){
-  var chip=document.getElementById('f-live');
   if(!LIVE_ENDPOINT)return;
-  chip.hidden=false;
-  base.forEach(function(r){
-    fetch(LIVE_ENDPOINT+(LIVE_ENDPOINT.indexOf('?')<0?'?':'&')+'channelId='+r[1],{headers:{Accept:'application/json'}})
+  var busy=false;
+  function pull(){
+    if(busy)return;busy=true;
+    fetch(LIVE_ENDPOINT,{headers:{Accept:'application/json'},cache:'no-store'})
       .then(function(res){return res.ok?res.json():null;})
-      .then(function(d){if(d&&d.live){r.live=true;renderRoster();}},function(){/* 조용히 넘어간다 */});
-  });
+      .then(function(d){var ids=liveIds(d);if(ids)liveApply(ids);},function(){/* 조용히 넘어간다 */})
+      .then(function(){busy=false;},function(){busy=false;});
+  }
+  pull();
+  setInterval(function(){if(!document.hidden)pull();},LIVE_INTERVAL);
 }
 initLive();
 
@@ -844,7 +934,7 @@ var home=document.getElementById('home'),topEl=document.querySelector('.top'),in
 var ambA=document.getElementById('ambA'),ambB=document.getElementById('ambB'),
     spotList=document.getElementById('spotList'),spotName=document.getElementById('spotName'),
     spotMeta=document.getElementById('spotMeta'),spotLink=document.getElementById('spotLink');
-var amb={i:0,timer:0,front:0,reduce:!!(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches)};
+var amb={i:0,n:0,timer:0,clearing:0,front:0,reduce:!!(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches)};
 /* 배경 색 번짐: 프로필 이미지의 평균색을 뽑아 스트리머마다 다른 은은한 빛으로 쓴다 */
 var AMB_RGB=[];
 function ambAvg(k){
@@ -858,7 +948,7 @@ function ambAvg(k){
       var lum=(m[0]*.299+m[1]*.587+m[2]*.114);
       var a=lum>170?.26:(lum<70?.5:.38);
       AMB_RGB[k]='rgba('+m[0]+','+m[1]+','+m[2]+','+a+')';
-      if(cafe&&amb.i===k){var w=document.querySelector('.amb-l.on .amb-w');if(w)w.style.background='radial-gradient(circle at 64% 46%,'+AMB_RGB[k]+',rgba(0,0,0,0) 62%)';}
+      if(ORD[amb.i]===k){var w=document.querySelector('.amb-l.on .amb-w');if(w)w.style.background='radial-gradient(circle at 64% 46%,'+AMB_RGB[k]+',rgba(0,0,0,0) 62%)';}
     }catch(e){}
   };
   im.src='img/s'+R[k][6]+'.jpg';
@@ -866,8 +956,27 @@ function ambAvg(k){
 R.forEach(function(r,k){var im=new Image();im.src='img/s'+r[6]+'.jpg';ambAvg(k);});
 /* r[7] 에 무음 루프 MP4 주소를 넣으면 그 크리에이터는 영상 배경으로 나온다 */
 function ambFill(node,r){
-  node.textContent='';
-  var wash=el('div','amb-w'),port=el('div','amb-p');
+  node.textContent='';                                   /* 이전 크리에이터의 iframe·영상도 여기서 함께 정리된다 */
+  var org=R.indexOf(r),wash=el('div','amb-w'),port=el('div','amb-p');
+  var vids=V[r[0]];
+  if(vids&&vids.length&&!amb.reduce){
+    /* 검증된 쇼츠·영상이 있으면 배경 전체를 희미하게 채운다 (무음·루프·컨트롤 없음) */
+    var pick=vids[Math.random()*vids.length|0];
+    var box=el('div','amb-v'+(pick[2]==='s'?' is-s':' is-w'));
+    var fr=document.createElement('iframe');
+    fr.src='https://www.youtube.com/embed/'+pick[0]+'?autoplay=1&mute=1&loop=1&playlist='+pick[0]+'&controls=0&modestbranding=1&rel=0&playsinline=1&iv_load_policy=3&disablekb=1&fs=0';
+    fr.title=r[0]+' 유튜브 영상';
+    fr.setAttribute('frameborder','0');
+    fr.setAttribute('allow','autoplay; encrypted-media; picture-in-picture');
+    fr.setAttribute('referrerpolicy','strict-origin-when-cross-origin');
+    fr.setAttribute('tabindex','-1');
+    fr.setAttribute('aria-hidden','true');
+    box.appendChild(fr);
+    if(AMB_RGB[org])wash.style.background='radial-gradient(circle at 64% 46%,'+AMB_RGB[org]+',rgba(0,0,0,0) 62%)';
+    node.appendChild(wash);
+    node.appendChild(box);
+    return;
+  }
   var v=r[7];
   if(v){
     /* 무음 루프 영상: 초상 자리에 영상을 넣고 배경은 색 번짐만 남긴다 */
@@ -882,12 +991,19 @@ function ambFill(node,r){
   node.appendChild(wash);node.appendChild(port);
 }
 function spotUpdate(){
-  var r=R[amb.i];if(!r)return;
-  spotName.textContent=r[0];
+  var r=R[ORD[amb.i]];if(!r)return;
+  spotName.textContent='';
+  if(r.live){var d=el('span','dot');d.setAttribute('aria-label','방송 중');spotName.appendChild(d);}
+  spotName.appendChild(document.createTextNode(r[0]));
+  if(r.live)spotName.appendChild(el('span','livetag','LIVE'));
   spotMeta.textContent='치지직 팔로워 '+r[2].toLocaleString('ko-KR')+' · '+(r[3]||'소속');
   spotLink.href='https://chzzk.naver.com/'+r[1];
   spotLink.textContent=r[0]+' 채널 열기 →';
-  [].forEach.call(spotList.children,function(b,k){b.setAttribute('aria-current',String(k===amb.i));});
+  [].forEach.call(spotList.children,function(b,k){
+    b.setAttribute('aria-current',String(k===amb.i));
+    var row=R[ORD[k]];if(!row)return;
+    if(row.live)b.classList.add('live');else b.classList.remove('live');
+  });
   var act=spotList.children[amb.i];
   if(act&&spotList.scrollTo){
     var left=act.offsetLeft-spotList.clientWidth/2+act.offsetWidth/2;
@@ -895,15 +1011,24 @@ function spotUpdate(){
   }
 }
 function ambShow(k){
-  k=(k%R.length+R.length)%R.length;
-  var r=R[k];if(!r)return;
+  var n=ORD.length;
+  k=(k%n+n)%n;
+  if(k===0&&amb.n>0){shuffleOrder();buildDots();}      /* 한 바퀴 다 돌면 순서를 다시 섞는다 */
+  amb.n=amb.n+1;
+  var r=R[ORD[k]];if(!r)return;
   amb.i=k;
   var back=amb.front?ambA:ambB;
   ambFill(back,r);
   back.classList.remove('on');
   void back.offsetWidth;                                  /* 팬 애니메이션을 처음부터 다시 */
   back.classList.add('on',amb.front?'kbA':'kbB');
-  (amb.front?ambB:ambA).classList.remove('on');
+  var out=amb.front?ambB:ambA;
+  out.classList.remove('on');
+  /* 페이드가 끝난 뒤 쓰이지 않는 레이어의 iframe을 지워 재생이 남지 않게 한다 */
+  clearTimeout(amb.clearing);
+  amb.clearing=setTimeout(function(){
+    if(!out.classList.contains('on')){out.textContent='';out.classList.remove('kbA','kbB');}
+  },1900);
   amb.front=amb.front?0:1;
   spotUpdate();
 }
@@ -912,15 +1037,24 @@ function ambPlay(){
   ambShow(amb.i);
   amb.timer=setInterval(function(){ambShow(amb.i+1);},amb.reduce?13000:7600);
 }
-function ambStop(){if(amb.timer){clearInterval(amb.timer);amb.timer=0;}}
-R.forEach(function(r,k){
-  var b=document.createElement('button');b.type='button';b.className='sdot';b.title=r[0];
-  b.setAttribute('aria-label',r[0]+' 배경으로 보기');
-  var im=document.createElement('img');im.src='img/s'+r[6]+'.jpg';im.alt='';im.width=36;im.height=36;im.loading='lazy';
-  b.appendChild(im);
-  b.addEventListener('click',function(){ambShow(k);ambPlay();});
-  spotList.appendChild(b);
-});
+function ambStop(){
+  if(amb.timer){clearInterval(amb.timer);amb.timer=0;}
+  /* 숨김·이동 시 배경 iframe을 비워 재생을 멈춘다 (다음 ambShow가 다시 채운다) */
+  [ambA,ambB].forEach(function(n){if(n){n.textContent='';n.classList.remove('on');n.classList.remove('kbA','kbB');}});
+}
+function buildDots(){
+  spotList.textContent='';
+  ORD.forEach(function(idx,slot){
+    var r=R[idx];if(!r)return;
+    var b=document.createElement('button');b.type='button';b.className='sdot'+(r.live?' live':'');b.title=r[0];
+    b.setAttribute('aria-label',r[0]+' 배경으로 보기');
+    var im=document.createElement('img');im.src='img/s'+r[6]+'.jpg';im.alt='';im.width=36;im.height=36;im.loading='lazy';
+    b.appendChild(im);
+    b.addEventListener('click',function(){ambShow(slot);ambPlay();});
+    spotList.appendChild(b);
+  });
+}
+buildDots();
 document.getElementById('spotPrev').addEventListener('click',function(){ambShow(amb.i-1);ambPlay();});
 document.getElementById('spotNext').addEventListener('click',function(){ambShow(amb.i+1);ambPlay();});
 document.addEventListener('visibilitychange',function(){
@@ -1103,6 +1237,7 @@ function cafeBuildStreams(){
     var li=el('li'),btn=el('button');
     btn.type='button';btn.dataset.streamer=name;
     btn.setAttribute('aria-current',String(cafe.state.streamer===name));
+    if(name&&isLive(name))btn.appendChild(el('span','dot'));
     if(img){var im=document.createElement('img');im.src=img;im.alt='';im.width=22;im.height=22;im.loading='lazy';btn.appendChild(im);}
     btn.appendChild(el('span','nm',name||'전체'));
     btn.appendChild(el('span','cnt',String(count)));
@@ -1142,7 +1277,7 @@ function cafeRow(p){
   li.appendChild(cafeThumb(p));
   var b=el('div','cp-b'),t=el('div','cp-t');
   t.appendChild(el('span','cp-badge b-'+p.board,BL[p.board]||'자유'));
-  if(p.streamer)t.appendChild(el('span','cp-stream',p.streamer));
+  if(p.streamer)t.appendChild(el('span','cp-stream'+(isLive(p.streamer)?' live':''),p.streamer));
   t.appendChild(el('span','cp-title',p.title||'(제목 없음)'));
   var n=cafeCm(p.id);
   if(n)t.appendChild(el('span','cp-cm','['+n+']'));
@@ -1263,7 +1398,7 @@ function cafeOpenPost(id){
   cpTitle.textContent=p.title||'(제목 없음)';
   cpMeta.textContent='';
   cpMeta.appendChild(el('span','cp-badge b-'+p.board,BL[p.board]||'자유'));
-  if(p.streamer)cpMeta.appendChild(el('span','cp-stream',p.streamer));
+  if(p.streamer)cpMeta.appendChild(el('span','cp-stream'+(isLive(p.streamer)?' live':''),p.streamer));
   cpMeta.appendChild(el('b','',p.author||'익명'));
   cpMeta.appendChild(el('span','',cafeWhen(p.created_at)));
   cpBody.textContent='';
